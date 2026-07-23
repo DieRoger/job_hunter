@@ -8,7 +8,7 @@ from __future__ import annotations
 import time
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from src.models.schemas import (
     CareerDirection,
@@ -32,31 +32,31 @@ class SharedContext:
     started_at: float = field(default_factory=time.time)
 
     # ─── 用户数据 ────────────────────────────────────
-    profile: Optional[UserProfile] = None
+    profile: UserProfile | None = None
     resume_text: str = ""                          # 原始简历文本
     profile_name: str = "default"                  # 画像名称
 
     # ─── 方向 + 搜索 ────────────────────────────────
-    career_directions: List[CareerDirection] = field(default_factory=list)
-    selected_direction_indices: List[int] = field(default_factory=list)
+    career_directions: list[CareerDirection] = field(default_factory=list)
+    selected_direction_indices: list[int] = field(default_factory=list)
 
-    raw_jobs: List[JobDescription] = field(default_factory=list)    # 爬虫原始数据
-    analyzed_jobs: List[JobDescription] = field(default_factory=list)  # JD分析后
-    match_results: List[MatchResult] = field(default_factory=list)     # 匹配评分后
+    raw_jobs: list[JobDescription] = field(default_factory=list)    # 爬虫原始数据
+    analyzed_jobs: list[JobDescription] = field(default_factory=list)  # JD分析后
+    match_results: list[MatchResult] = field(default_factory=list)     # 匹配评分后
 
     # ─── 优化结果 ────────────────────────────────────
-    optimized_resume: Optional[OptimizedResume] = None
+    optimized_resume: OptimizedResume | None = None
     greeting_message: str = ""
     qa_risk_level: str = "low"
-    qa_warnings: List[str] = field(default_factory=list)
+    qa_warnings: list[str] = field(default_factory=list)
     ats_score: float = 0.0
-    ats_details: Dict[str, Any] = field(default_factory=dict)
+    ats_details: dict[str, Any] = field(default_factory=dict)
 
     # ─── 审核反馈 ────────────────────────────────────
     review_passed: bool = True
-    review_comments: List[str] = field(default_factory=list)
+    review_comments: list[str] = field(default_factory=list)
     judge_score: float = 0.0
-    critic_suggestions: List[str] = field(default_factory=list)
+    critic_suggestions: list[str] = field(default_factory=list)
 
     # ─── 导出 ────────────────────────────────────────
     export_path: str = ""
@@ -64,8 +64,8 @@ class SharedContext:
 
     # ─── 元数据 ──────────────────────────────────────
     current_step: str = ""
-    errors: List[str] = field(default_factory=list)
-    extra: Dict[str, Any] = field(default_factory=dict)
+    errors: list[str] = field(default_factory=list)
+    extra: dict[str, Any] = field(default_factory=dict)
 
     # ─── 便捷方法 ────────────────────────────────────
 
@@ -79,7 +79,7 @@ class SharedContext:
     def has_jobs(self) -> bool:
         return len(self.analyzed_jobs) > 0 or len(self.raw_jobs) > 0
 
-    def top_job(self) -> Optional[JobDescription]:
+    def top_job(self) -> JobDescription | None:
         """获取评分最高的职位"""
         if self.match_results:
             return self.match_results[0].job
@@ -89,7 +89,7 @@ class SharedContext:
             return self.raw_jobs[0]
         return None
 
-    def top_career(self) -> Optional[CareerDirection]:
+    def top_career(self) -> CareerDirection | None:
         if self.career_directions:
             return self.career_directions[0]
         return None

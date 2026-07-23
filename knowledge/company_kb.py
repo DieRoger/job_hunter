@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 from loguru import logger
 
@@ -31,7 +31,7 @@ class CompanyKB:
         self._llm = get_llm_client()
         self._cost = CostMonitor.get_instance()
 
-    def get(self, company: str, force_refresh: bool = False) -> Dict[str, Any]:
+    def get(self, company: str, force_refresh: bool = False) -> dict[str, Any]:
         """获取公司知识（缓存优先）"""
         cache_path = self._cache_path(company)
 
@@ -52,7 +52,7 @@ class CompanyKB:
         cache_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return data
 
-    def _fetch(self, company: str) -> Dict[str, Any]:
+    def _fetch(self, company: str) -> dict[str, Any]:
         """LLM 抓取公司信息"""
         prompt = f"""请提供关于"{company}"公司的以下信息。每条30-80字，如果不确定写"暂无公开信息"。
 
@@ -77,7 +77,7 @@ class CompanyKB:
         try:
             return json.loads(resp.content)
         except json.JSONDecodeError:
-            return {f: "获取失败" for f in self.FIELDS}
+            return dict.fromkeys(self.FIELDS, "获取失败")
 
     def summary_for_greeting(self, company: str) -> str:
         """生成招呼语可用的公司信息摘要（100字内）"""

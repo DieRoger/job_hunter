@@ -9,8 +9,6 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from loguru import logger
-
 from src.domain.rules import QADomain
 from src.llm.client import get_llm_client
 from src.llm.resilience import CostMonitor
@@ -23,7 +21,6 @@ from src.models.schemas import (
 from src.repository.store import ProfileRepository, ResumeRepository
 from src.utils.registry import PromptRegistry
 from src.workflow.context import AgentResult, BaseAgent, WorkflowContext
-
 
 # ─── Resume Optimize Agent ────────────────────────────────
 

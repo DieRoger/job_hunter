@@ -6,9 +6,7 @@ ATS Analyzer Agent — 简历 ATS（Applicant Tracking System）兼容性分析
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List
-
-from loguru import logger
+from typing import Any
 
 from src.llm.client import get_llm_client
 from src.llm.resilience import CostMonitor

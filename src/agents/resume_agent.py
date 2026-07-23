@@ -134,7 +134,7 @@ class ResumeAgent(BaseAgent):
                         text_parts.append(text)
             return "\n\n".join(text_parts)
         except ImportError:
-            raise ImportError("pdfplumber 未安装，无法解析 PDF")
+            raise ImportError("pdfplumber 未安装，无法解析 PDF") from None
 
     def _parse_docx(self, filepath: Path) -> str:
         """Word 文本提取"""
@@ -143,7 +143,7 @@ class ResumeAgent(BaseAgent):
             doc = Document(filepath)
             return "\n".join(p.text for p in doc.paragraphs if p.text.strip())
         except ImportError:
-            raise ImportError("python-docx 未安装，无法解析 Word")
+            raise ImportError("python-docx 未安装，无法解析 Word") from None
 
 
 # ─── 交互式查漏补缺 ───────────────────────────────────────

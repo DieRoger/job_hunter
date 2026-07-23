@@ -6,11 +6,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import yaml
 from pydantic import BaseModel
-
 
 # ─── 子配置模型 ───────────────────────────────────────────
 
@@ -37,7 +36,7 @@ class DiscoverConfig(BaseModel):
 
 class SearchConfig(BaseModel):
     top_n_jobs_per_direction: int = 10
-    platforms: List[str] = ["boss", "lagou"]
+    platforms: list[str] = ["boss", "lagou"]
 
 
 class MatchingWeights(BaseModel):
@@ -99,9 +98,9 @@ class ModelInfo(BaseModel):
 class ProviderConfig(BaseModel):
     base_url: str
     api_key_env: str
-    models: Dict[str, ModelInfo]
+    models: dict[str, ModelInfo]
     default_model: str
-    reasoner_model: Optional[str] = None
+    reasoner_model: str | None = None
 
 
 class RouterRule(BaseModel):
@@ -110,13 +109,13 @@ class RouterRule(BaseModel):
 
 
 class RouterConfig(BaseModel):
-    rules: List[RouterRule] = []
+    rules: list[RouterRule] = []
     embedding_provider: str = "deepseek"
     embedding_model: str = "deepseek-embed"
 
 
 class ModelConfig(BaseModel):
-    providers: Dict[str, ProviderConfig]
+    providers: dict[str, ProviderConfig]
     router: RouterConfig
 
 
@@ -127,14 +126,14 @@ class PlatformCrawlerConfig(BaseModel):
     base_url: str
     search_url: str
     enabled: bool = True
-    request_interval: List[int] = [3, 8]
+    request_interval: list[int] = [3, 8]
     max_retries: int = 3
     page_timeout: int = 30
 
 
 class BrowserConfig(BaseModel):
     headless: bool = True
-    viewport: List[int] = [1920, 1080]
+    viewport: list[int] = [1920, 1080]
     user_agent: str = ""
     locale: str = "zh-CN"
     stealth_mode: bool = True
@@ -147,7 +146,7 @@ class AntiDetectConfig(BaseModel):
 
 
 class CrawlerConfig(BaseModel):
-    platforms: Dict[str, PlatformCrawlerConfig]
+    platforms: dict[str, PlatformCrawlerConfig]
     browser: BrowserConfig
     anti_detect: AntiDetectConfig
 
@@ -163,7 +162,7 @@ class TemplateColors(BaseModel):
 class ResumeTemplate(BaseModel):
     name: str
     html: str
-    fonts: List[str] = []
+    fonts: list[str] = []
     colors: TemplateColors = TemplateColors()
 
 
@@ -179,11 +178,11 @@ class OptimizationSettings(BaseModel):
 
 
 class SectionsOrder(BaseModel):
-    order: List[str] = ["personal_info", "summary", "skills", "experience", "projects", "education", "certifications"]
+    order: list[str] = ["personal_info", "summary", "skills", "experience", "projects", "education", "certifications"]
 
 
 class ResumeConfig(BaseModel):
-    templates: Dict[str, ResumeTemplate]
+    templates: dict[str, ResumeTemplate]
     optimization: OptimizationSettings
     sections: SectionsOrder
 
@@ -193,8 +192,8 @@ class ResumeConfig(BaseModel):
 class ConfigLoader:
     """统一配置加载器，单例模式"""
 
-    _instance: "ConfigLoader | None" = None
-    _config_dir: Optional[Path] = None
+    _instance: ConfigLoader | None = None
+    _config_dir: Path | None = None
 
     def __init__(self, config_dir: str | Path | None = None):
         if config_dir is None:
@@ -203,7 +202,7 @@ class ConfigLoader:
         self._cache: dict[str, Any] = {}
 
     @classmethod
-    def get_instance(cls, config_dir: str | Path | None = None) -> "ConfigLoader":
+    def get_instance(cls, config_dir: str | Path | None = None) -> ConfigLoader:
         if cls._instance is None:
             cls._instance = cls(config_dir)
         return cls._instance
@@ -214,7 +213,7 @@ class ConfigLoader:
         filepath = self._config_dir / filename
         if not filepath.exists():
             raise FileNotFoundError(f"配置文件不存在: {filepath}")
-        with open(filepath, "r", encoding="utf-8") as f:
+        with open(filepath, encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
         self._cache[filename] = data
         return data

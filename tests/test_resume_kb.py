@@ -1,6 +1,10 @@
-import sys,io,json
+import io
+import json
+import sys
+
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 from knowledge.resume_kb import ResumeKB
+
 kb=ResumeKB()
 data=json.loads(open('evaluation/datasets/eval_v1.json',encoding='utf-8').read())
 for p in data["pairs"]:

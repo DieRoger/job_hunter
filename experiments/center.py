@@ -9,7 +9,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List
 
 from loguru import logger
 
@@ -116,7 +115,11 @@ class ExperimentCenter:
             "name": name,
             "variant_a": {"variant": variant_a, "config": a["config"], "metrics": a["metrics"]},
             "variant_b": {"variant": variant_b, "config": b["config"], "metrics": b["metrics"]},
-            "winner": variant_a if a["metrics"].get("judge_score", 0) >= b["metrics"].get("judge_score", 0) else variant_b,
+            "winner": (
+                variant_a
+                if a["metrics"].get("judge_score", 0) >= b["metrics"].get("judge_score", 0)
+                else variant_b
+            ),
             "delta": {},
         }
 
@@ -145,7 +148,7 @@ class ExperimentCenter:
         experiments = []
 
         for combo in itertools.product(*values):
-            config = dict(zip(keys, combo))
+            config = dict(zip(keys, combo, strict=False))
             if fixed_config:
                 config.update(fixed_config)
 
@@ -167,7 +170,7 @@ class ExperimentCenter:
     @property
     def summary(self) -> dict:
         """实验总览"""
-        names = set(h["name"] for h in self._history)
+        names = {h["name"] for h in self._history}
         result = {}
         for name in names:
             records = [h for h in self._history if h["name"] == name]
@@ -176,6 +179,6 @@ class ExperimentCenter:
                 "total_experiments": len(records),
                 "best_variant": best["variant"],
                 "best_score": best["metrics"].get("judge_score", 0),
-                "variants": list(set(h["variant"] for h in records)),
+                "variants": list({h["variant"] for h in records}),
             }
         return result

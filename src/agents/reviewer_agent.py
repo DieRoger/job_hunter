@@ -4,7 +4,6 @@ Reviewer Agent — AI 输出二次审核，提升结果质量
 
 from __future__ import annotations
 
-import json
 from typing import Any
 
 from loguru import logger
@@ -44,7 +43,7 @@ class ReviewerAgent(BaseAgent):
             filtered.append(d)
 
         if len(filtered) < 3:
-            logger.warning(f"过滤后方向不足3个，保留全部原始推荐")
+            logger.warning("过滤后方向不足3个，保留全部原始推荐")
             return directions
 
         return filtered

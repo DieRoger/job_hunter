@@ -4,11 +4,9 @@
 
 from __future__ import annotations
 
-import json
-import os
 import webbrowser
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -34,7 +32,7 @@ class ResumeRenderer:
         tmpl = self._env.get_template(f"{template}.html")
 
         # 构建模板上下文
-        ctx: Dict[str, Any] = {
+        ctx: dict[str, Any] = {
             "profile": profile,
             "summary": optimized.summary if optimized else profile.summary,
             "skills": self._prepare_skills(profile, optimized),

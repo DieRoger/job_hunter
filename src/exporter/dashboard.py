@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
-from typing import Any, Dict, List
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -57,7 +56,7 @@ class DashboardBuilder:
         )[:12]
 
         # ── 公司分布 ──
-        company_counts: Dict[str, int] = {}
+        company_counts: dict[str, int] = {}
         for job in memory._applied_jobs:
             c = job.get("company", "未知")
             company_counts[c] = company_counts.get(c, 0) + 1
@@ -69,7 +68,7 @@ class DashboardBuilder:
         salary_values = [30, 60, 100, 45]
 
         # ── 时间线 ──
-        timeline: List[Dict] = []
+        timeline: list[dict] = []
         for job in memory._applied_jobs[-5:]:
             timeline.append({
                 "action": f"{job.get('company','?')} - {job.get('title','?')}",

@@ -8,9 +8,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-
-from loguru import logger
+from typing import Any
 
 from src.exceptions import RepositoryError
 
@@ -40,7 +38,7 @@ class SQLiteRepository:
         """)
         self._conn.commit()
 
-    def save(self, key: str, data: Dict[str, Any]) -> None:
+    def save(self, key: str, data: dict[str, Any]) -> None:
         try:
             self._conn.execute(f"""
                 INSERT OR REPLACE INTO {self.namespace} (key, data, updated_at)
@@ -50,7 +48,7 @@ class SQLiteRepository:
         except sqlite3.Error as e:
             raise RepositoryError(f"SQLite保存失败 {self.namespace}/{key}: {e}") from e
 
-    def load(self, key: str) -> Optional[Dict[str, Any]]:
+    def load(self, key: str) -> dict[str, Any] | None:
         try:
             row = self._conn.execute(
                 f"SELECT data FROM {self.namespace} WHERE key = ?", (key,)
@@ -65,7 +63,7 @@ class SQLiteRepository:
         self._conn.execute(f"DELETE FROM {self.namespace} WHERE key = ?", (key,))
         self._conn.commit()
 
-    def list_keys(self) -> List[str]:
+    def list_keys(self) -> list[str]:
         rows = self._conn.execute(f"SELECT key FROM {self.namespace}").fetchall()
         return [r["key"] for r in rows]
 
@@ -76,7 +74,7 @@ class SQLiteRepository:
         return row is not None
 
     def query(self, where: str = "", params: tuple = (),
-              order_by: str = "", limit: int = 50) -> List[Dict[str, Any]]:
+              order_by: str = "", limit: int = 50) -> list[dict[str, Any]]:
         """高级查询 — SQLite 特有优势"""
         sql = f"SELECT key, data, updated_at FROM {self.namespace}"
         if where:

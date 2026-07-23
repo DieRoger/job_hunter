@@ -7,8 +7,6 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from loguru import logger
-
 from src.llm.client import get_llm_client
 from src.llm.resilience import CostMonitor
 from src.models.schemas import JobDescription

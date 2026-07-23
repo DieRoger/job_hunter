@@ -1,5 +1,10 @@
 """半自动爬虫 — 用户手动过验证码 → agent-browser自动采集"""
-import subprocess,json,time,re,sys,io
+import io
+import re
+import subprocess
+import sys
+import time
+
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 # 复用 Playwright 的 Chromium

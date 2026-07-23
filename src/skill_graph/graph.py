@@ -4,9 +4,6 @@
 
 from __future__ import annotations
 
-import math
-from typing import Dict, List, Optional
-
 
 class SkillNode:
     """技能树节点"""
@@ -17,7 +14,7 @@ class SkillNode:
         self.children: list[SkillNode] = []
         self.parent: SkillNode | None = None
 
-    def add_child(self, child: "SkillNode") -> "SkillNode":
+    def add_child(self, child: SkillNode) -> SkillNode:
         child.parent = self
         self.children.append(child)
         return child

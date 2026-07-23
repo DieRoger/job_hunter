@@ -9,7 +9,7 @@ import json
 import re
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import faiss
 import numpy as np
@@ -33,14 +33,14 @@ class ResumeKB:
         for sub in ["raw", "chunks", "embeddings", "metadata"]:
             (self._dir / sub).mkdir(parents=True, exist_ok=True)
         self._embedding = EmbeddingClient()
-        self._index: Optional[faiss.IndexFlatIP] = None
-        self._metadata: List[Dict[str, Any]] = []
+        self._index: faiss.IndexFlatIP | None = None
+        self._metadata: list[dict[str, Any]] = []
         self._load()
 
     # ─── 构建 ────────────────────────────────────────────
 
     def add_resume(self, resume_text: str, source: str = "synthetic",
-                   tags: List[str] | None = None) -> int:
+                   tags: list[str] | None = None) -> int:
         """添加一份简历到知识库，返回 chunk 数量"""
         chunks = self._chunk_resume(resume_text)
         if not chunks:
@@ -86,7 +86,7 @@ class ResumeKB:
         logger.info(f"Resume KB: +{len(chunks)} chunks (total: {len(self._metadata)})")
         return len(chunks)
 
-    def _chunk_resume(self, text: str) -> List[Dict[str, Any]]:
+    def _chunk_resume(self, text: str) -> list[dict[str, Any]]:
         """将简历文本分块"""
         chunks = []
 
@@ -131,8 +131,8 @@ class ResumeKB:
     # ─── 检索 ────────────────────────────────────────────
 
     def search(self, query: str, top_k: int = 5,
-               chunk_types: List[str] | None = None,
-               min_similarity: float = 0.5) -> List[Dict[str, Any]]:
+               chunk_types: list[str] | None = None,
+               min_similarity: float = 0.5) -> list[dict[str, Any]]:
         """语义检索"""
         if self._index is None or len(self._metadata) == 0:
             return []
@@ -145,7 +145,7 @@ class ResumeKB:
         scores, indices = self._index.search(query_vec, search_k)
 
         results = []
-        for score, idx in zip(scores[0], indices[0]):
+        for score, idx in zip(scores[0], indices[0], strict=False):
             if idx < 0 or idx >= len(self._metadata):
                 continue
             meta = self._metadata[idx]
@@ -174,7 +174,7 @@ class ResumeKB:
 
         return results
 
-    def keyword_search(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
+    def keyword_search(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:
         """BM25 风格关键词检索（简化版：关键词交集 + TF）"""
         query_terms = set(query.lower().split())
         if not query_terms:
@@ -207,7 +207,7 @@ class ResumeKB:
                       semantic_weight: float = 0.45,
                       keyword_weight: float = 0.35,
                       metadata_weight: float = 0.20,
-                      chunk_types: List[str] | None = None) -> List[Dict[str, Any]]:
+                      chunk_types: list[str] | None = None) -> list[dict[str, Any]]:
         """
         Hybrid 检索: Final = semantic*0.45 + keyword*0.35 + metadata*0.20
         """
@@ -215,7 +215,7 @@ class ResumeKB:
         keyword_results = self.keyword_search(query, top_k=top_k * 2)
 
         # 合并 + 去重
-        merged: Dict[int, Dict[str, Any]] = {}
+        merged: dict[int, dict[str, Any]] = {}
 
         # 归一化语义分
         max_sem = max((r["score"] for r in semantic_results), default=1.0)
@@ -251,11 +251,11 @@ class ResumeKB:
         final.sort(key=lambda x: -x["hybrid_score"])
         return final[:top_k]
 
-    def _tfidf_embed(self, texts: List[str], dim: int = 256) -> List[List[float]]:
+    def _tfidf_embed(self, texts: list[str], dim: int = 256) -> list[list[float]]:
         """TF-IDF 风格词袋向量（fallback）"""
         from collections import Counter
         # 构建全局词汇表
-        all_words: List[str] = []
+        all_words: list[str] = []
         for t in texts:
             all_words.extend(t.lower().split())
         word_freq = Counter(all_words)

@@ -4,11 +4,9 @@ Pydantic 数据模型 — 全系统统一数据结构
 
 from __future__ import annotations
 
-from datetime import date
-from typing import Any, Dict, List, List
+from typing import Any
 
 from pydantic import BaseModel, Field
-
 
 # ─── 用户画像 ─────────────────────────────────────────────
 
@@ -25,8 +23,8 @@ class WorkExperience(BaseModel):
     start_date: str  # "YYYY-MM"
     end_date: str    # "YYYY-MM" or "至今"
     description: str = ""
-    highlights: List[str] = Field(default_factory=list)
-    skills_used: List[str] = Field(default_factory=list)
+    highlights: list[str] = Field(default_factory=list)
+    skills_used: list[str] = Field(default_factory=list)
 
 
 class Project(BaseModel):
@@ -35,8 +33,8 @@ class Project(BaseModel):
     start_date: str = ""
     end_date: str = ""
     description: str = ""
-    tech_stack: List[str] = Field(default_factory=list)
-    highlights: List[str] = Field(default_factory=list)
+    tech_stack: list[str] = Field(default_factory=list)
+    highlights: list[str] = Field(default_factory=list)
     url: str = ""
 
 
@@ -65,15 +63,15 @@ class UserProfile(BaseModel):
     expected_salary: str = ""
 
     # 结构化数据
-    skills: List[Skill] = Field(default_factory=list)
-    experiences: List[WorkExperience] = Field(default_factory=list)
-    projects: List[Project] = Field(default_factory=list)
-    education: List[Education] = Field(default_factory=list)
+    skills: list[Skill] = Field(default_factory=list)
+    experiences: list[WorkExperience] = Field(default_factory=list)
+    projects: list[Project] = Field(default_factory=list)
+    education: list[Education] = Field(default_factory=list)
 
     # 扩展
-    languages: List[str] = Field(default_factory=list)
-    certifications: List[str] = Field(default_factory=list)
-    preferences: Dict[str, Any] = Field(default_factory=dict)
+    languages: list[str] = Field(default_factory=list)
+    certifications: list[str] = Field(default_factory=list)
+    preferences: dict[str, Any] = Field(default_factory=dict)
 
 
 # ─── 岗位方向 ─────────────────────────────────────────────
@@ -88,7 +86,7 @@ class LearningItem(BaseModel):
 class ProjectSuggestion(BaseModel):
     name: str
     description: str = ""
-    tech_stack: List[str] = Field(default_factory=list)
+    tech_stack: list[str] = Field(default_factory=list)
     difficulty: str = "medium"
 
 
@@ -97,10 +95,10 @@ class CareerDirection(BaseModel):
     title: str                          # 岗位名称
     match_score: float = 0.0            # 匹配度 0-100
     match_reason: str = ""              # 匹配理由
-    skill_gaps: List[str] = Field(default_factory=list)  # 技能缺口
+    skill_gaps: list[str] = Field(default_factory=list)  # 技能缺口
     resume_advice: str = ""             # 简历优化建议
-    learning_path: List[LearningItem] = Field(default_factory=list)  # 学习路线
-    suggested_projects: List[ProjectSuggestion] = Field(default_factory=list)
+    learning_path: list[LearningItem] = Field(default_factory=list)  # 学习路线
+    suggested_projects: list[ProjectSuggestion] = Field(default_factory=list)
     timeline: str = ""                  # 成长时间线
     difficulty: str = "medium"          # 入门难度
 
@@ -116,8 +114,8 @@ class JobDescription(BaseModel):
     city: str = ""
     education: str = ""
     experience_years: int = 0
-    skills_required: List[str] = Field(default_factory=list)
-    skills_preferred: List[str] = Field(default_factory=list)
+    skills_required: list[str] = Field(default_factory=list)
+    skills_preferred: list[str] = Field(default_factory=list)
     description: str = ""
     industry: str = ""
     source_platform: str = ""
@@ -125,10 +123,10 @@ class JobDescription(BaseModel):
     raw_text: str = ""
 
     # JD 分析结果
-    hard_skills: List[str] = Field(default_factory=list)
-    soft_skills: List[str] = Field(default_factory=list)
-    bonus_points: List[str] = Field(default_factory=list)
-    keywords: List[str] = Field(default_factory=list)
+    hard_skills: list[str] = Field(default_factory=list)
+    soft_skills: list[str] = Field(default_factory=list)
+    bonus_points: list[str] = Field(default_factory=list)
+    keywords: list[str] = Field(default_factory=list)
 
 
 # ─── 匹配结果 ─────────────────────────────────────────────
@@ -141,7 +139,7 @@ class MatchResult(BaseModel):
     skill_graph_score: float = 0.0
     final_score: float = 0.0
     match_details: str = ""
-    recommendations: List[str] = Field(default_factory=list)
+    recommendations: list[str] = Field(default_factory=list)
 
 
 # ─── 优化简历 ─────────────────────────────────────────────
@@ -154,14 +152,14 @@ class OptimizedResume(BaseModel):
 
     # 各板块优化后内容
     summary: str = ""
-    skills_highlight: List[str] = Field(default_factory=list)
-    experiences: List[Dict[str, Any]] = Field(default_factory=list)
-    projects: List[Dict[str, Any]] = Field(default_factory=list)
+    skills_highlight: list[str] = Field(default_factory=list)
+    experiences: list[dict[str, Any]] = Field(default_factory=list)
+    projects: list[dict[str, Any]] = Field(default_factory=list)
 
     # QA 结果
     qa_passed: bool = True
     qa_risk_level: str = "low"
-    qa_warnings: List[str] = Field(default_factory=list)
+    qa_warnings: list[str] = Field(default_factory=list)
 
     # 元数据
     tokens_used: int = 0
@@ -175,7 +173,7 @@ class GreetingMessage(BaseModel):
     target_job_id: str = ""
     target_company: str = ""
     content: str = ""              # 150 字以内
-    match_highlights: List[str] = Field(default_factory=list)
+    match_highlights: list[str] = Field(default_factory=list)
     tokens_used: int = 0
 
 
@@ -185,10 +183,10 @@ class WorkflowState(BaseModel):
     """工作流状态（断点恢复用）"""
     session_id: str = ""
     current_step: str = ""
-    completed_steps: List[str] = Field(default_factory=list)
+    completed_steps: list[str] = Field(default_factory=list)
     profile_id: str = ""
-    selected_directions: List[int] = Field(default_factory=list)
-    selected_jobs: List[str] = Field(default_factory=list)
-    results: Dict[str, Any] = Field(default_factory=dict)
+    selected_directions: list[int] = Field(default_factory=list)
+    selected_jobs: list[str] = Field(default_factory=list)
+    results: dict[str, Any] = Field(default_factory=dict)
     created_at: str = ""
     updated_at: str = ""

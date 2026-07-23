@@ -88,12 +88,12 @@ class CareerAgent(BaseAgent):
                 resume_advice=item.get("resume_advice", ""),
                 learning_path=[
                     LearningItem(
-                        topic=l.get("topic", ""),
-                        resource=l.get("resource", ""),
-                        estimated_hours=l.get("estimated_hours", 0),
-                        priority=l.get("priority", "medium"),
+                        topic=lp.get("topic", ""),
+                        resource=lp.get("resource", ""),
+                        estimated_hours=lp.get("estimated_hours", 0),
+                        priority=lp.get("priority", "medium"),
                     )
-                    for l in item.get("learning_path", [])
+                    for lp in item.get("learning_path", [])
                 ],
                 suggested_projects=[
                     ProjectSuggestion(

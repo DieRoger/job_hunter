@@ -5,11 +5,8 @@ SearchPipeline — 搜索流水线
 
 from __future__ import annotations
 
-from typing import Any, List
-
 from loguru import logger
 
-from src.domain.rules import MatchingDomain
 from src.evaluator.scorer import MatchScorer
 from src.llm.router import EmbeddingClient
 from src.models.schemas import JobDescription, MatchResult, UserProfile
@@ -95,7 +92,10 @@ class SearchPipeline:
 
         scored = []
         for jd in jobs:
-            jd_text = f"{jd.title} {jd.description[:200]} {' '.join(jd.skills_required[:10] if jd.skills_required else jd.hard_skills[:10])}"
+            skills_str = " ".join(
+                jd.skills_required[:10] if jd.skills_required else jd.hard_skills[:10]
+            )
+            jd_text = f"{jd.title} {jd.description[:200]} {skills_str}"
             jd_vec = self._embedding.embed(jd_text)
             sim = self._embedding.similarity(profile_vec, jd_vec)
             scored.append((sim, jd))

@@ -9,8 +9,6 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from loguru import logger
-
 from src.llm.client import get_llm_client
 from src.llm.resilience import CostMonitor
 from src.workflow.context import AgentResult, BaseAgent, WorkflowContext
@@ -97,7 +95,7 @@ class CriticAgent(BaseAgent):
         self._cost = CostMonitor.get_instance()
 
     def execute(self, ctx: WorkflowContext, **kwargs: Any) -> AgentResult:
-        task_type = kwargs.get("task_type", "resume_optimize")
+        kwargs.get("task_type", "resume_optimize")
         original = kwargs.get("original", {})
         optimized = kwargs.get("optimized", {})
         judge_result = kwargs.get("judge_result", {})

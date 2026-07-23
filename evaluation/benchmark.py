@@ -8,7 +8,6 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-from typing import Any, Dict, List
 
 from loguru import logger
 
@@ -222,7 +221,7 @@ class EvaluationRunner:
     def _compute_ats(self, resume: dict, jd: dict) -> float:
         """计算ATS分数（简化版，不调LLM）"""
         # 关键词覆盖
-        jd_skills = set(s.lower() for s in jd.get("skills_required", []))
+        jd_skills = {s.lower() for s in jd.get("skills_required", [])}
         resume_skills = set()
         for s in resume.get("skills", []):
             parts = s.split(":")

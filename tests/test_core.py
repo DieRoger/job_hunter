@@ -1,6 +1,6 @@
 """核心模块测试 — pytest"""
-import sys,os,json
 import pytest
+
 
 # 不需要真实API的单元测试
 class TestDomainRules:
@@ -184,8 +184,8 @@ class TestSharedContext:
         assert ctx.qa_risk_level == "low"
 
     def test_profile_set(self):
-        from src.workflow.shared_context import SharedContext
         from src.models.schemas import UserProfile
+        from src.workflow.shared_context import SharedContext
         ctx = SharedContext()
         ctx.profile = UserProfile(name="test")
         assert ctx.has_profile()
@@ -195,7 +195,7 @@ class TestSharedContext:
         ctx = SharedContext(user_id="u1")
         s = ctx.summary()
         assert s["user"] == "u1"
-        assert s["has_profile"] == False
+        assert not s["has_profile"]
 
 
 class TestMemory:
@@ -214,8 +214,8 @@ class TestMemory:
         assert m.stats["total_applied"] == 1
 
     def test_skill_summary(self, tmpdir):
+        from src.models.schemas import Skill, UserProfile
         from src.utils.memory import UserMemory
-        from src.models.schemas import UserProfile, Skill
         m = UserMemory("test", str(tmpdir))
         m.profile = UserProfile(name="test", skills=[
             Skill(name="Python", level="精通", years=3)

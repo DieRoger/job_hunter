@@ -5,10 +5,10 @@ Planner Agent — V3.1 核心升级
 
 from __future__ import annotations
 
-import asyncio
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
 from loguru import logger
 
@@ -166,7 +166,7 @@ class PlannerAgent(BaseAgent):
                     if task.id == "qa" and task.result and task.result.success:
                         resume = task.result.data
                         if hasattr(resume, 'qa_risk_level') and resume.qa_risk_level == "high":
-                            logger.warning(f"QA不通过(risk=high)，触发回退重优化")
+                            logger.warning("QA不通过(risk=high)，触发回退重优化")
                             # 回退：重置 optimize 和 qa 任务
                             if "optimize" in self._tasks:
                                 self._tasks["optimize"].status = TaskStatus.PENDING

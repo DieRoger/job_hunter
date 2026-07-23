@@ -1,9 +1,15 @@
 """从真实网站批量搜集简历 — 精简快速版"""
-import sys,io,os,re,time
+import io
+import os
+import re
+import sys
+import time
+
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 os.environ["no_proxy"]="*"
 
 import httpx
+
 from knowledge.resume_kb import ResumeKB
 
 kb = ResumeKB()
@@ -123,5 +129,6 @@ print(f"   类型: {types}")
 
 # 实际数raw文件
 import glob
+
 raw_files = glob.glob("knowledge/resume_kb/raw/*.md")
 print(f"   实际raw文件: {len(raw_files)} 份")

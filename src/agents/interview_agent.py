@@ -9,15 +9,12 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-
-from loguru import logger
+from typing import Any
 
 from src.llm.client import get_llm_client
 from src.llm.resilience import CostMonitor
-from src.models.schemas import JobDescription, UserProfile
+from src.models.schemas import JobDescription
 from src.workflow.context import AgentResult, BaseAgent, WorkflowContext
-
 
 # ─── Question Graph ─────────────────────────────────────
 
@@ -79,8 +76,8 @@ class InterviewSession:
     company: str = ""
     position: str = ""
     current_node: str = "start"
-    history: List[Dict[str, Any]] = field(default_factory=list)
-    weakness_tags: List[str] = field(default_factory=list)
+    history: list[dict[str, Any]] = field(default_factory=list)
+    weakness_tags: list[str] = field(default_factory=list)
     overall_score: float = 0.0
     started_at: float = field(default_factory=time.time)
     completed: bool = False
@@ -110,7 +107,7 @@ class InterviewSession:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "InterviewSession":
+    def from_dict(cls, data: dict) -> InterviewSession:
         return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
 
 
@@ -133,7 +130,7 @@ class InterviewAgent(BaseAgent):
         self._session_dir = Path(session_dir)
         self._session_dir.mkdir(parents=True, exist_ok=True)
 
-    def generate_questions(self, jd: JobDescription, count: int = 20) -> List[Dict[str, str]]:
+    def generate_questions(self, jd: JobDescription, count: int = 20) -> list[dict[str, str]]:
         """根据JD生成面试题（静态版，用于准备）"""
         prompt = f"""为以下岗位生成{count}道面试题，分四类：
 
@@ -166,7 +163,7 @@ class InterviewAgent(BaseAgent):
         self._save_session(session)
         return session
 
-    def ask_next(self, session: InterviewSession) -> Dict[str, Any]:
+    def ask_next(self, session: InterviewSession) -> dict[str, Any]:
         """获取下一个问题"""
         node = QUESTION_GRAPH.get(session.current_node)
         if not node or not node["follow_ups"]:
@@ -190,7 +187,7 @@ class InterviewAgent(BaseAgent):
         return {"type": QUESTION_GRAPH.get(session.current_node, {}).get("type", "general"),
                 "question": question, "node": session.current_node}
 
-    def evaluate_answer(self, session: InterviewSession, question: str, answer: str) -> Dict[str, Any]:
+    def evaluate_answer(self, session: InterviewSession, question: str, answer: str) -> dict[str, Any]:
         """评估回答并给出分数+反馈"""
         prompt = f"""评估以下面试回答（0-100分）。
 
@@ -217,12 +214,12 @@ class InterviewAgent(BaseAgent):
         return result
 
     def mock_interview(self, session: InterviewSession,
-                       user_answers: List[str]) -> Dict[str, Any]:
+                       user_answers: list[str]) -> dict[str, Any]:
         """运行完整模拟面试"""
         results = []
         questions = []
 
-        for i, answer in enumerate(user_answers):
+        for _i, answer in enumerate(user_answers):
             # 获取问题
             q = self.ask_next(session)
             if q["type"] == "end":
@@ -245,7 +242,7 @@ class InterviewAgent(BaseAgent):
             "weakness_tags": session.weakness_tags,
         }
 
-    def load_session(self, session_id: str) -> Optional[InterviewSession]:
+    def load_session(self, session_id: str) -> InterviewSession | None:
         """加载历史会话（断点续答）"""
         path = self._session_dir / f"{session_id}.json"
         if not path.exists():

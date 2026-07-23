@@ -1,9 +1,16 @@
 """完整重建 Resume KB — 从真实网站搜集≥50份简历"""
-import sys,io,os,re,time,json
+import io
+import json
+import os
+import re
+import sys
+import time
+
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 os.environ["no_proxy"]="*"
 
 import httpx
+
 from knowledge.resume_kb import ResumeKB
 
 kb = ResumeKB()
@@ -107,7 +114,8 @@ for url,src,tags in overseas:
 # ============================================================
 print("\n5. 评测数据集")
 try:
-    data = json.loads(open("evaluation/datasets/eval_v1.json", encoding="utf-8").read())
+    with open("evaluation/datasets/eval_v1.json", encoding="utf-8") as f:
+        data = json.loads(f.read())
     for p in data["pairs"]:
         res = p["resume"]
         text = f"# {res['name']}\n{res['summary']}\nSkills: {' '.join(res['skills'])}\n"
@@ -129,6 +137,6 @@ print(f"   类型: {types}")
 
 # 验证 ≥50
 if sources >= 50:
-    print(f"   🎯 已达到50+目标！")
+    print("   🎯 已达到50+目标！")
 else:
     print(f"   ⚠️ 还差 {50-sources} 个源")

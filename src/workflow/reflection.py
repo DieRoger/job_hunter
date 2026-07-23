@@ -5,8 +5,6 @@ Agent 输出 → Reviewer 审核 → 不通过 → 回退重试 → 直到达标
 
 from __future__ import annotations
 
-from typing import Any
-
 from loguru import logger
 
 from src.agents.optimize_agent import QAAgent, ResumeOptimizeAgent

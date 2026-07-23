@@ -8,8 +8,8 @@ from __future__ import annotations
 import asyncio
 import time
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
 
 from loguru import logger
 
@@ -118,7 +118,7 @@ class CostRecord:
 class CostMonitor:
     """Token / 耗时 / 成本统计器，单例"""
 
-    _instance: "CostMonitor | None" = None
+    _instance: CostMonitor | None = None
 
     def __init__(self):
         self._records: list[CostRecord] = []
@@ -130,7 +130,7 @@ class CostMonitor:
         })
 
     @classmethod
-    def get_instance(cls) -> "CostMonitor":
+    def get_instance(cls) -> CostMonitor:
         if cls._instance is None:
             cls._instance = cls()
         return cls._instance

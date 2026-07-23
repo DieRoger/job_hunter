@@ -4,10 +4,7 @@ Search 排序器 — 三元评分（Rule + LLM + Skill Graph）集成
 
 from __future__ import annotations
 
-import json
-from typing import Any, List
-
-from loguru import logger
+from typing import Any
 
 from src.domain.rules import MatchingDomain
 from src.llm.client import get_llm_client

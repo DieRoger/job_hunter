@@ -9,10 +9,9 @@ from __future__ import annotations
 import time
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, Dict, Generic, List, TypeVar
+from typing import Any, Generic, TypeVar
 
-from src.config import ConfigLoader, default_config
-
+from src.config import ConfigLoader
 
 T = TypeVar("T")
 
@@ -34,7 +33,7 @@ class WorkflowContext:
     started_at: float = field(default_factory=time.monotonic)
     extra: dict[str, Any] = field(default_factory=dict)
 
-    def replace(self, **changes: Any) -> "WorkflowContext":
+    def replace(self, **changes: Any) -> WorkflowContext:
         """返回新快照（不可变更新）"""
         current = {k: getattr(self, k) for k in self.__dataclass_fields__}  # type: ignore[attr-defined]
         current.update(changes)
@@ -58,11 +57,11 @@ class AgentResult(Generic[T]):
     extra: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def ok(cls, data: T, **kwargs: Any) -> "AgentResult[T]":
+    def ok(cls, data: T, **kwargs: Any) -> AgentResult[T]:
         return cls(success=True, data=data, **kwargs)
 
     @classmethod
-    def fail(cls, error: str, **kwargs: Any) -> "AgentResult[T]":
+    def fail(cls, error: str, **kwargs: Any) -> AgentResult[T]:
         return cls(success=False, error=error, **kwargs)
 
 

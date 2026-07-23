@@ -10,20 +10,20 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict
+from typing import Any
 
 from loguru import logger
 
 from src.exceptions import CacheError, ConfigurationError
-
 
 # ─── Prompt Registry ──────────────────────────────────────
 
 class PromptRegistry:
     """Prompt 模板注册中心 — Prompt 与 JSON Schema 绑定，加载时校验"""
 
-    _instance: "PromptRegistry | None" = None
+    _instance: PromptRegistry | None = None
     _prompts_dir: Path | None = None
 
     def __init__(self, prompts_dir: str | Path | None = None):
@@ -35,7 +35,7 @@ class PromptRegistry:
         self._preload()
 
     @classmethod
-    def get_instance(cls, prompts_dir: str | Path | None = None) -> "PromptRegistry":
+    def get_instance(cls, prompts_dir: str | Path | None = None) -> PromptRegistry:
         if cls._instance is None:
             cls._instance = cls(prompts_dir)
         return cls._instance
@@ -181,7 +181,7 @@ class PluginManager:
 
 # ─── Event Bus ────────────────────────────────────────────
 
-EventCallback = Callable[[str, Dict[str, Any]], None]
+EventCallback = Callable[[str, dict[str, Any]], None]
 
 
 class EventBus:

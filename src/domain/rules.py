@@ -5,7 +5,6 @@ Agent 和 Service 都调用 Domain 层方法
 
 from __future__ import annotations
 
-import math
 from typing import Any
 
 
@@ -67,21 +66,13 @@ class MatchingDomain:
             skill_score = (matched / len(jd_skills)) * 50
 
         # 年限匹配 (30%)
-        if jd_years <= 0:
-            year_score = 30.0
-        elif user_years >= jd_years:
-            year_score = 30.0
-        else:
-            year_score = (user_years / jd_years) * 30
+        year_score = 30.0 if jd_years <= 0 or user_years >= jd_years else user_years / jd_years * 30
 
         # 学历匹配 (20%)
         edu_levels = {"初中": 1, "高中": 2, "中专": 3, "大专": 4, "本科": 5, "硕士": 6, "博士": 7}
         user_edu = edu_levels.get(user_education, 0)
         jd_edu = edu_levels.get(jd_education, 0)
-        if jd_edu <= 0 or user_edu >= jd_edu:
-            edu_score = 20.0
-        else:
-            edu_score = (user_edu / jd_edu) * 20
+        edu_score = 20.0 if jd_edu <= 0 or user_edu >= jd_edu else user_edu / jd_edu * 20
 
         return round(skill_score + year_score + edu_score, 1)
 

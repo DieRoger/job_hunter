@@ -3,39 +3,40 @@ Job Hunter V3 — AI 智能求职助手
 用法: python run.py [命令]
 """
 
-import sys, io, os, json, time
+import io
+import sys
 from pathlib import Path
+
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+# ── Repository 单行切换 ──
 
 import typer
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich import print as rprint
+from rich.table import Table
 
-from src.agents.resume_agent import ResumeAgent, ask_missing_info
-from src.agents.career_agent import CareerAgent
-from src.agents.reviewer_agent import ReviewerAgent
-from src.agents.jd_agent import JDAnalysisAgent
-from src.agents.optimize_agent import ResumeOptimizeAgent, QAAgent, GreetingAgent
 from src.agents.ats_agent import ATSAnalyzer
-from src.agents.planner import PlannerAgent, Plan, Task
+from src.agents.career_agent import CareerAgent
 from src.agents.interview_agent import InterviewAgent
+from src.agents.optimize_agent import GreetingAgent, QAAgent, ResumeOptimizeAgent
+from src.agents.planner import PlannerAgent
+from src.agents.resume_agent import ResumeAgent, ask_missing_info
+from src.agents.reviewer_agent import ReviewerAgent
+from src.exporter.dashboard import DashboardBuilder
+from src.exporter.renderer import ResumeRenderer
 from src.llm.resilience import CostMonitor
+from src.models.schemas import JobDescription, UserProfile
+from src.repository.sqlite_store import SQLiteProfileRepository
+from src.repository.store import ProfileRepository as JSONProfileRepo
+from src.utils.memory import UserMemory
 from src.workflow.context import WorkflowContext
 from src.workflow.reflection import ReflectionWorkflow
 from src.workflow.shared_context import SharedContext
-from src.repository.store import ProfileRepository as JSONProfileRepo
-from src.repository.sqlite_store import SQLiteProfileRepository
-from src.models.schemas import UserProfile, JobDescription
-from src.exporter.renderer import ResumeRenderer
-from src.exporter.dashboard import DashboardBuilder
-from src.utils.memory import UserMemory
 
-# ── Repository 单行切换 ──
-from typing import Union
-def get_repo() -> Union[SQLiteProfileRepository, JSONProfileRepo]:
+
+def get_repo() -> SQLiteProfileRepository | JSONProfileRepo:
     """返回 SQLite Repository（自动从 JSON 迁移数据）"""
     sqlite_repo = SQLiteProfileRepository()
     json_repo = JSONProfileRepo()

@@ -23,7 +23,9 @@ class BaseRepository:
         self._data_dir.mkdir(parents=True, exist_ok=True)
 
     def _path(self, key: str) -> Path:
-        safe_key = key.replace("/", "-").replace("\\", "-").replace(":", "-").replace("*", "").replace("?", "").replace('"', "").replace("<", "").replace(">", "").replace("|", "")
+        import re
+        safe_key = re.sub(r'[\\/:*?"<>|]', '', key)
+        safe_key = safe_key.replace("/", "-")
         return self._data_dir / f"{safe_key}.json"
 
     def save(self, key: str, data: dict[str, Any]) -> None:

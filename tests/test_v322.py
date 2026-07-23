@@ -1,5 +1,8 @@
 """Test V3.2.2: CompanyKB + Interview + SQLite"""
-import sys,io,os
+import io
+import os
+import sys
+
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 os.environ["DEEPSEEK_API_KEY"]="DEEPSEEK_API_KEY_PLACEHOLDER"
 os.environ["no_proxy"]="*"
@@ -7,7 +10,8 @@ os.environ["no_proxy"]="*"
 # 1. SQLite Repository
 print("="*50)
 print("Test 1: SQLite Repository")
-from src.repository.sqlite_store import SQLiteProfileRepository, SQLiteInterviewRepository
+from src.repository.sqlite_store import SQLiteProfileRepository
+
 repo = SQLiteProfileRepository()
 repo.save("test_user", {"name":"张三","skills":["Python","Django"]})
 loaded = repo.load("test_user")
@@ -21,10 +25,11 @@ repo.close()
 print("\n"+"="*50)
 print("Test 2: Company Knowledge Base")
 from knowledge.company_kb import CompanyKB
+
 ckb = CompanyKB()
 # Test cache
 data = ckb.get("腾讯", force_refresh=False)
-print(f"  Company: 腾讯")
+print("  Company: 腾讯")
 print(f"  Business: {data.get('business','?')[:60]}")
 print(f"  Summary:  {ckb.summary_for_greeting('腾讯')[:80]}")
 
@@ -32,6 +37,7 @@ print(f"  Summary:  {ckb.summary_for_greeting('腾讯')[:80]}")
 print("\n"+"="*50)
 print("Test 3: Interview Agent")
 from src.agents.interview_agent import InterviewAgent
+
 agent = InterviewAgent()
 session = agent.start_session("腾讯", "Python后端开发", "test_session_001")
 next_q = agent.ask_next(session)

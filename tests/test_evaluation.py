@@ -1,12 +1,15 @@
 """测试 V3.15 Evaluation Layer"""
-import sys, io, os, json
+import io
+import os
+import sys
+
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 os.environ["DEEPSEEK_API_KEY"] = "DEEPSEEK_API_KEY_PLACEHOLDER"
 
 from evaluation.benchmark import EvaluationRunner
-from src.agents.judge_agent import JudgeAgent, CriticAgent
+from experiments.center import Experiment, ExperimentCenter
+from src.agents.judge_agent import CriticAgent, JudgeAgent
 from src.workflow.context import WorkflowContext
-from experiments.center import ExperimentCenter, Experiment
 
 # ─── Test 1: ATS Benchmark ──────────────────────
 print("=" * 50)
