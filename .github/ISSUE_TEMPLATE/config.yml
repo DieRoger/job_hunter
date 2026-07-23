@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+issue_template:
+  - name: Bug Report
+    description: Report a bug or unexpected behavior
+  - name: Feature Request
+    description: Suggest an idea for this project
