@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime data
+*.db
+*.sqlite
+job_hunter.db
+~/.job-hunter/
+.job-hunter/
+
+# Generated output
+export/
+reports/
+logs/
+
+# Resume KB runtime data
+knowledge/resume_kb/chunks/*
+knowledge/resume_kb/raw/*
+knowledge/resume_kb/embeddings/*
+knowledge/resume_kb/metadata/*
+!knowledge/resume_kb/metadata/.gitkeep
+
+# Test files with API keys
+test_int.py
+test_api.py
+
+# Environment / secrets
+.env
+.env.*
+!env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node
+node_modules/

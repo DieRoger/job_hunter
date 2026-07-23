@@ -1,0 +1,42 @@
+{
+  "session_id": "interview_1784791628",
+  "company": "腾讯",
+  "position": "Python高级后端",
+  "current_node": "hr",
+  "history": [
+    {
+      "question": "项目中你和团队如何协作？有没有出现过意见分歧？",
+      "answer": "我负责电商订单系统开发",
+      "score": 60,
+      "feedback": "回答未直接回应协作和分歧问题，仅描述个人职责，缺乏团队互动细节。",
+      "timestamp": 1784791640.477389
+    },
+    {
+      "question": "如果这个系统需要扩展到10倍用户量，你会从哪些方面入手？",
+      "answer": "使用Django+MySQL+Redis",
+      "score": 60,
+      "feedback": "回答过于简略，缺乏具体扩展策略和架构设计考量。",
+      "timestamp": 1784791641.5611613
+    },
+    {
+      "question": "请实现反转链表 或 实现一个LRU缓存，可以口述思路或伪代码。",
+      "answer": "日均处理10万订单",
+      "score": 20,
+      "feedback": "回答与问题无关，未展示算法能力。",
+      "timestamp": 1784791642.5147731
+    },
+    {
+      "question": "你为什么想加入我们公司？你对薪资和职业发展有什么期望？",
+      "answer": "优化后QPS从2000提升到8000",
+      "score": 60,
+      "feedback": "回答未直接回应问题，缺乏对公司和岗位的针对性。",
+      "timestamp": 1784791643.6389055
+    }
+  ],
+  "weakness_tags": [
+    "请实现反转链表 或 实现一个LRU缓存，可以口述思路或伪代码"
+  ],
+  "overall_score": 0.0,
+  "started_at": 1784791628.890651,
+  "completed": false
+}

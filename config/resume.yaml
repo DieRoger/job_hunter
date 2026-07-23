@@ -1,0 +1,47 @@
+# 简历模板与优化配置
+
+templates:
+  professional:
+    name: "专业简洁风"
+    html: "professional.html"
+    fonts: ["SimSun", "Microsoft YaHei"]
+    colors:
+      primary: "#1a1a2e"
+      accent: "#16213e"
+      text: "#333333"
+
+  modern:
+    name: "现代设计风"
+    html: "modern.html"
+    fonts: ["Source Han Sans CN", "Microsoft YaHei"]
+    colors:
+      primary: "#2d3436"
+      accent: "#0984e3"
+      text: "#2d3436"
+
+  creative:
+    name: "创意个性风"
+    html: "creative.html"
+    fonts: ["Noto Sans SC", "Microsoft YaHei"]
+    colors:
+      primary: "#6c5ce7"
+      accent: "#a29bfe"
+      text: "#2d3436"
+
+optimization:
+  # 优化方向权重
+  weights:
+    skill_highlight: 0.35       # 技能关键词对齐
+    project_reorder: 0.25       # 项目经历重排
+    description_rewrite: 0.25   # 经历描述改写
+    format_ats: 0.15            # ATS 格式优化
+
+sections:
+  order:                        # 简历板块优先级
+    - personal_info
+    - summary
+    - skills
+    - experience
+    - projects
+    - education
+    - certifications

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>{{ profile.name }} — 简历（现代风）</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", "Source Han Sans CN", sans-serif; font-size: 13px; color: #2d3436; max-width: 210mm; margin: 0 auto; }
+
+  .layout { display: flex; min-height: 297mm; }
+
+  /* 左侧栏 */
+  .sidebar { width: 32%; background: linear-gradient(180deg, #0984e3 0%, #6c5ce7 100%); color: #fff; padding: 25px 20px; }
+  .sidebar .name { font-size: 24px; letter-spacing: 3px; margin-bottom: 4px; }
+  .sidebar .role { font-size: 13px; opacity: 0.85; margin-bottom: 20px; }
+  .sidebar .block { margin-bottom: 18px; }
+  .sidebar .block h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 4px; margin-bottom: 8px; }
+  .sidebar .contact-item { font-size: 11px; margin-bottom: 3px; opacity: 0.9; }
+  .sidebar .skill-item { display: inline-block; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 10px; font-size: 11px; margin: 2px 4px 2px 0; }
+
+  /* 右侧主内容 */
+  .main { width: 68%; padding: 25px 22px; }
+  .main .section { margin-bottom: 16px; }
+  .main .section-title { font-size: 15px; color: #0984e3; border-bottom: 2px solid #0984e3; padding-bottom: 3px; margin-bottom: 8px; letter-spacing: 2px; }
+
+  .exp-item { margin-bottom: 9px; }
+  .exp-header { display: flex; justify-content: space-between; align-items: baseline; }
+  .exp-header .company { font-weight: bold; font-size: 14px; color: #2d3436; }
+  .exp-header .position { color: #636e72; }
+  .exp-header .dates { color: #b2bec3; font-size: 11px; }
+  .exp-desc { color: #636e72; font-size: 12px; margin-top: 2px; }
+  .exp-desc ul { padding-left: 16px; margin-top: 3px; }
+  .exp-desc li { margin-bottom: 2px; }
+
+  .proj-item { margin-bottom: 7px; }
+  .proj-header { font-weight: bold; font-size: 13px; color: #2d3436; }
+  .proj-header .tech { font-weight: normal; color: #b2bec3; font-size: 11px; margin-left: 6px; }
+  .proj-desc { color: #636e72; font-size: 12px; }
+
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- 左侧栏 -->
+  <div class="sidebar">
+    <div class="name">{{ profile.name }}</div>
+    <div class="role">{{ profile.current_position or '求职中' }}</div>
+
+    <div class="block">
+      <h3>联系方式</h3>
+      {% if profile.email %}<div class="contact-item">✉ {{ profile.email }}</div>{% endif %}
+      {% if profile.phone %}<div class="contact-item">☎ {{ profile.phone }}</div>{% endif %}
+      {% if profile.city %}<div class="contact-item">📍 {{ profile.city }}</div>{% endif %}
+    </div>
+
+    {% if skills %}
+    <div class="block">
+      <h3>核心技能</h3>
+      {% for s in skills[:8] %}
+      <span class="skill-item">{{ s.name }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if education %}
+    <div class="block">
+      <h3>教育背景</h3>
+      {% for e in education %}
+      <div style="font-size:12px;margin-bottom:3px;">
+        <div style="font-weight:bold;">{{ e.school }}</div>
+        <div style="opacity:0.8;">{{ e.degree }} · {{ e.major }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- 右侧主内容 -->
+  <div class="main">
+    {% if target_position %}
+    <div style="text-align:right;color:#0984e3;font-size:12px;margin-bottom:12px;">
+      应聘：{{ target_position }}{% if target_company %} @ {{ target_company }}{% endif %}
+    </div>
+    {% endif %}
+
+    {% if summary %}
+    <div class="section">
+      <div class="section-title">个人简述</div>
+      <p style="font-size:13px;color:#636e72;">{{ summary }}</p>
+    </div>
+    {% endif %}
+
+    {% if experiences %}
+    <div class="section">
+      <div class="section-title">工作经历</div>
+      {% for exp in experiences %}
+      <div class="exp-item">
+        <div class="exp-header">
+          <span><span class="company">{{ exp.company }}</span> | {{ exp.position }}</span>
+          <span class="dates">{{ exp.start_date }} — {{ exp.end_date }}</span>
+        </div>
+        <div class="exp-desc">
+          {% if exp.highlights %}
+          <ul>{% for h in exp.highlights %}<li>{{ h }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if projects %}
+    <div class="section">
+      <div class="section-title">项目经历</div>
+      {% for p in projects %}
+      <div class="proj-item">
+        <div class="proj-header">{{ p.name }}<span class="tech">{{ p.tech_stack|join(' · ') }}</span></div>
+        <div class="proj-desc">
+          {% if p.highlights %}
+          <ul>{% for h in p.highlights %}<li>{{ h }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+</body>
+</html>

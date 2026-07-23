@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Job Hunter · 求职驾驶舱</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0b1121; --surface: #131b2f; --surface2: #1a2540;
+    --text: #e8edf5; --text2: #8b9cc0; --text3: #556888;
+    --gold: #f0a828; --gold-dim: rgba(240,168,40,0.12);
+    --indigo: #7c8aff; --indigo-dim: rgba(124,138,255,0.1);
+    --emerald: #2dd4a0; --emerald-dim: rgba(45,212,160,0.12);
+    --rose: #f47282; --border: #1e2d4a;
+    --radius: 8px; --radius-lg: 14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Inter","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+  
+  /* ── 顶部光晕（签名元素）── */
+  body::before{content:'';position:fixed;top:-40%;left:20%;width:600px;height:600px;
+    background:radial-gradient(circle,rgba(240,168,40,0.06) 0%,transparent 70%);
+    pointer-events:none;z-index:0}
+  body::after{content:'';position:fixed;bottom:-20%;right:10%;width:500px;height:500px;
+    background:radial-gradient(circle,rgba(124,138,255,0.05) 0%,transparent 70%);
+    pointer-events:none;z-index:0}
+
+  /* ── Layout ── */
+  .app{max-width:1280px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+  
+  /* Header */
+  .header{display:flex;align-items:center;justify-content:space-between;padding:24px 0 18px}
+  .logo{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+  .logo span{background:linear-gradient(135deg,var(--gold),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header-right{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--text2)}
+  .status-dot{width:7px;height:7px;background:var(--emerald);border-radius:50%;display:inline-block;animation:pulse 2.5s infinite;margin-right:5px}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(45,212,160,0.4)}50%{opacity:0.7;box-shadow:0 0 0 6px rgba(45,212,160,0)}}
+
+  /* Tabs */
+  .tabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid var(--border)}
+  .tab{padding:10px 20px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+  .tab:hover{color:var(--text);border-bottom-color:var(--text3)}
+  .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+  
+  /* Stat row */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;position:relative;overflow:hidden;transition:transform .2s}
+  .stat-card:hover{transform:translateY(-2px)}
+  .stat-card::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;opacity:0.06;pointer-events:none}
+  .stat-card:nth-child(1)::after{background:var(--gold)}
+  .stat-card:nth-child(2)::after{background:var(--indigo)}
+  .stat-card:nth-child(3)::after{background:var(--emerald)}
+  .stat-card:nth-child(4)::after{background:var(--rose)}
+  .stat-value{font-size:34px;font-weight:800;line-height:1;letter-spacing:-1px}
+  .stat-value.gold{color:var(--gold)}.stat-value.indigo{color:var(--indigo)}
+  .stat-value.emerald{color:var(--emerald)}.stat-value.rose{color:var(--rose)}
+  .stat-label{font-size:11px;color:var(--text3);margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+
+  /* Grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+  .grid-3{grid-template-columns:1fr 1fr 1fr}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px}
+  .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .card-title{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px}
+  .card-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+  .card-badge.good{background:var(--emerald-dim);color:var(--emerald)}
+  .card-badge.warn{background:var(--gold-dim);color:var(--gold)}
+  .card.span-2{grid-column:span 2}
+
+  /* Progress */
+  .progress-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+  .progress-bar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:3px;transition:width 1.2s ease}
+
+  /* Tags */
+  .tags{display:flex;flex-wrap:wrap;gap:5px}
+  .tag{padding:5px 12px;border-radius:14px;font-size:11px;font-weight:500;border:1px solid}
+  .tag.master{border-color:rgba(240,168,40,0.25);color:var(--gold);background:var(--gold-dim)}
+  .tag.pro{border-color:rgba(124,138,255,0.2);color:var(--indigo);background:var(--indigo-dim)}
+  .tag.normal{border-color:var(--border);color:var(--text2)}
+
+  /* Timeline */
+  .tl-item{display:flex;align-items:center;padding:8px 0;gap:10px;border-bottom:1px solid var(--border);font-size:12px}
+  .tl-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+  .tl-icon.apply{background:rgba(139,156,192,0.1)}.tl-icon.interview{background:var(--gold-dim)}
+  .tl-icon.offer{background:var(--emerald-dim)}
+  .tl-body{flex:1}.tl-meta{font-size:10px;color:var(--text3)}
+
+  /* Section */
+  .section{display:none}.section.active{display:block}
+
+  /* Chart */
+  .chart-wrap{position:relative;height:180px}
+  .chart-wrap.tall{height:240px}
+  .chart-wrap canvas{width:100%!important;height:100%!important}
+
+  /* Resume card */
+  .resume-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+  .resume-card:hover{border-color:var(--gold);background:rgba(240,168,40,0.03)}
+  .resume-card .title{font-weight:600;font-size:13px}
+  .resume-card .meta{font-size:11px;color:var(--text3);margin-top:3px}
+
+  /* Button */
+  .btn{background:linear-gradient(135deg,var(--gold),#e5980b);color:#0b1121;border:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s}
+  .btn:hover{opacity:0.9}
+  .btn.ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+  .btn.ghost:hover{background:var(--surface2)}
+
+  @media(max-width:768px){
+    .stat-row{grid-template-columns:1fr 1fr}
+    .grid,.grid-3{grid-template-columns:1fr}
+    .card.span-2{grid-column:span 1}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">Job <span>Hunter</span> · 求职驾驶舱</div>
+    <div class="header-right">
+      <span><span class="status-dot"></span>DeepSeek V3</span>
+      <span id="headerUser">{{ user_name }}</span>
+      <span id="headerTime">{{ updated_at }}</span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('dashboard')">📊 驾驶舱</button>
+    <button class="tab" onclick="switchTab('resumes')">📋 简历管理</button>
+    <button class="tab" onclick="switchTab('discover')">🎯 岗位发现</button>
+    <button class="tab" onclick="switchTab('stats')">📈 成本分析</button>
+  </div>
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <div class="section active" id="tab-dashboard">
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-value gold" id="statApplied">{{ stats.applied }}</div><div class="stat-label">总投递</div></div>
+      <div class="stat-card"><div class="stat-value indigo" id="statInterview">{{ stats.interviews }}</div><div class="stat-label">面试</div></div>
+      <div class="stat-card"><div class="stat-value emerald" id="statOffer">{{ stats.offers }}</div><div class="stat-label">Offer</div></div>
+      <div class="stat-card"><div class="stat-value rose" id="statSkills">{{ stats.skills }}</div><div class="stat-label">技能数</div></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><span class="card-title">📈 转化漏斗</span></div>
+        <div id="funnel"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 ATS 趋势</span><span class="card-badge good">avg 59</span></div>
+        <div class="chart-wrap"><canvas id="atsChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🛠️ 技能热度</span></div>
+        <div class="tags" id="skillTags"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">💰 薪资分布</span></div>
+        <div class="chart-wrap"><canvas id="salaryChart"></canvas></div>
+      </div>
+      <div class="card span-2">
+        <div class="card-header"><span class="card-title">📅 最近活动</span></div>
+        <div id="timeline"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RESUMES ═══ -->
+  <div class="section" id="tab-resumes">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <span style="font-size:14px;font-weight:600">📋 已优化简历</span>
+      <button class="btn" onclick="alert('请在终端运行: python run.py optimize -d 1')">+ 新建优化</button>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><span class="card-title">导出历史</span></div>
+        <div class="resume-card"><div class="title">Python高级后端开发</div><div class="meta">ATS 59 · QA low · 招呼 155字 · 07/23</div></div>
+        <div class="resume-card"><div class="title">全栈开发工程师</div><div class="meta">ATS 52 · QA low · 招呼 128字 · 07/23</div></div>
+        <div class="resume-card"><div class="title">数据工程师</div><div class="meta">ATS 48 · QA medium · 招呼 110字 · 07/23</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">ATS 分析历史</span></div>
+        <div class="chart-wrap tall"><canvas id="atsHistoryChart"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="card-header"><span class="card-title">💡 优化建议</span></div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.8">
+        <div>· 关键词覆盖率偏低，将JD技能词融入简历</div>
+        <div>· 量化描述不足，用数字体现成果</div>
+        <div>· STAR结构较弱，用"情境→任务→行动→结果"描述经历</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DISCOVER ═══ -->
+  <div class="section" id="tab-discover">
+    <div style="font-size:14px;font-weight:600;margin-bottom:14px">🎯 基于你的画像推荐的岗位方向</div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><span class="card-title">🏆 推荐方向</span></div>
+        <div id="directionList"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 匹配度分布</span></div>
+        <div class="chart-wrap tall"><canvas id="matchChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STATS ═══ -->
+  <div class="section" id="tab-stats">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><span class="card-title">💰 API 成本</span></div>
+        <div class="chart-wrap tall"><canvas id="costChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 调用分布</span></div>
+        <div class="chart-wrap tall"><canvas id="callChart"></canvas></div>
+      </div>
+      <div class="card span-2">
+        <div class="card-header"><span class="card-title">💡 优化建议</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="background:var(--emerald-dim);padding:12px;border-radius:8px;font-size:12px;color:var(--emerald)">✅ 缓存命中率 73%<br><span style="font-size:10px;opacity:0.7">已节省 $0.0023</span></div>
+          <div style="background:var(--gold-dim);padding:12px;border-radius:8px;font-size:12px;color:var(--gold)">⚠️ 简历优化最高<br><span style="font-size:10px;opacity:0.7">$0.0009/次</span></div>
+          <div style="background:var(--indigo-dim);padding:12px;border-radius:8px;font-size:12px;color:var(--indigo)">📈 月预估 $0.07<br><span style="font-size:10px;opacity:0.7">按30次/月计算</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══ Tab Switching ═══
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelector('.tab[onclick*="'+name+'"]').classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='dashboard') renderDashboard();
+  if(name==='resumes') renderResumes();
+  if(name==='discover') renderDiscover();
+  if(name==='stats') renderStats();
+}
+
+// ═══ Header ═══
+document.getElementById('headerUser').textContent = '张三 · Python后端';
+document.getElementById('headerTime').textContent = new Date().toLocaleDateString('zh-CN');
+
+// ═══ DASHBOARD ═══
+function renderDashboard(){
+  // Funnel
+  var funnelData = {{ funnel_stages | tojson }};
+  var funnelRates = {{ funnel_rates | tojson }};
+  var html='';
+  funnelData.forEach(function(s,i){
+    html+='<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>'+s.label+'</span><span style="color:'+s.color+'">'+s.count+'</span></div>';
+    html+='<div style="height:6px;background:var(--border);border-radius:3px"><div style="height:100%;width:'+s.width+'%;background:'+s.color+';border-radius:3px;transition:width 1s"></div></div></div>';
+    if(i<funnelRates.length) html+='<div style="text-align:center;color:var(--text3);font-size:10px;padding:1px 0">▼ '+funnelRates[i]+'</div>';
+  });
+  document.getElementById('funnel').innerHTML=html;
+
+  // Skills
+  var skillData = {{ skills | tojson }};
+  document.getElementById('skillTags').innerHTML=skillData.map(function(s){return '<span class="tag '+s.cls+'">'+s.name+' · '+s.years+'年</span>';}).join('');
+
+  // Timeline
+  var tlData = {{ timeline | tojson }};
+  document.getElementById('timeline').innerHTML=tlData.map(function(t){return '<div class="tl-item"><div class="tl-icon '+(t.status||'apply')+'">'+t.icon+'</div><div class="tl-body">'+t.action+'</div><div class="tl-meta">'+t.date+' · '+t.status+'</div></div>';}).join('');
+
+  // ATS Chart
+  new Chart(document.getElementById('atsChart'),{type:'line',data:{labels:['V1','V2','V3','最新'],datasets:[{data:[55,62,59,59],borderColor:'#f0a828',backgroundColor:'rgba(240,168,40,0.06)',fill:true,tension:0.4,borderWidth:2,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#556888'},grid:{display:false}},y:{min:0,max:100,ticks:{color:'#556888'},grid:{color:'rgba(30,45,74,0.5)'}}}}});
+
+  // Salary Chart
+  new Chart(document.getElementById('salaryChart'),{type:'bar',data:{labels:['10-15K','15-20K','20-30K','30K+'],datasets:[{data:[30,60,100,45],backgroundColor:['rgba(139,156,192,0.4)','rgba(124,138,255,0.5)','rgba(240,168,40,0.6)','rgba(45,212,160,0.5)'],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#556888'},grid:{display:false}},y:{ticks:{color:'#556888'},grid:{color:'rgba(30,45,74,0.5)'}}}}});
+}
+
+// ═══ RESUMES ═══
+function renderResumes(){
+  new Chart(document.getElementById('atsHistoryChart'),{type:'bar',data:{labels:['Python后端','全栈开发','数据工程','Golang后端','DevOps'],datasets:[{data:[59,52,48,42,38],backgroundColor:['rgba(240,168,40,0.6)','rgba(124,138,255,0.5)','rgba(139,156,192,0.4)','rgba(45,212,160,0.4)','rgba(244,114,130,0.4)'],borderRadius:5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{min:0,max:100,ticks:{color:'#556888'},grid:{color:'rgba(30,45,74,0.5)'}},y:{ticks:{color:'#8b9cc0'},grid:{display:false}}}}});
+}
+
+// ═══ DISCOVER ═══
+function renderDiscover(){
+  var dirs=[
+    {title:'Python高级后端',score:95,gap:'分布式·消息队列·架构',time:'1周补Redis→1月Demo→可投'},
+    {title:'Python微服务开发',score:88,gap:'K8s·gRPC·服务治理',time:'2周K8s→1月项目→可投'},
+    {title:'全栈开发',score:75,gap:'React·TypeScript·CSS',time:'1月学React→2月项目→可投'},
+    {title:'数据工程师',score:70,gap:'Spark·Hive·ETL',time:'1月Spark→2月项目→可投'},
+    {title:'DevOps工程师',score:65,gap:'K8s·CI/CD·监控',time:'2周K8s→1月CI/CD→可投'},
+  ];
+  document.getElementById('directionList').innerHTML=dirs.map(function(d,i){
+    return '<div class="resume-card"><div style="display:flex;justify-content:space-between"><span class="title">'+(i+1)+'. '+d.title+'</span><span style="color:var(--gold);font-weight:700">'+d.score+'%</span></div><div class="meta">缺口: '+d.gap+' | '+d.time+'</div></div>';
+  }).join('');
+
+  new Chart(document.getElementById('matchChart'),{type:'bar',data:{labels:dirs.map(function(d){return d.title.split(' ')[0];}),datasets:[{data:dirs.map(function(d){return d.score;}),backgroundColor:['rgba(240,168,40,0.7)','rgba(240,168,40,0.5)','rgba(124,138,255,0.5)','rgba(139,156,192,0.4)','rgba(139,156,192,0.3)'],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{color:'#556888'},grid:{color:'rgba(30,45,74,0.5)'}},x:{ticks:{color:'#8b9cc0'},grid:{display:false}}}}});
+}
+
+// ═══ STATS ═══
+function renderStats(){
+  new Chart(document.getElementById('costChart'),{type:'line',data:{labels:['7/20','7/21','7/22','7/23'],datasets:[{data:[0.0008,0.0012,0.0018,0.0022],borderColor:'#f0a828',backgroundColor:'rgba(240,168,40,0.06)',fill:true,tension:0.4,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#556888'},grid:{display:false}},y:{ticks:{color:'#556888',callback:function(v){return'$'+v.toFixed(4)}},grid:{color:'rgba(30,45,74,0.5)'}}}}});
+
+  new Chart(document.getElementById('callChart'),{type:'doughnut',data:{labels:['简历解析','方向推荐','简历优化','招呼生成','ATS分析'],datasets:[{data:[2,1,1,1,1],backgroundColor:['rgba(240,168,40,0.7)','rgba(124,138,255,0.6)','rgba(45,212,160,0.6)','rgba(244,114,130,0.5)','rgba(139,156,192,0.5)'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#8b9cc0',font:{size:10},padding:14}}}}});
+}
+
+// Init
+renderDashboard();
+</script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+{
+  "meta": {
+    "name": "job-hunter-eval-v1",
+    "version": "1.0",
+    "description": "JD-Resume 评测数据集，用于 Benchmark Agent 输出质量",
+    "total_pairs": 30,
+    "industries": ["互联网", "金融科技", "电商", "AI/ML", "企业服务"]
+  },
+  "pairs": [
+    {
+      "id": "eval_001",
+      "industry": "互联网",
+      "jd": {
+        "title": "高级Python后端开发",
+        "company": "某头部互联网公司",
+        "education": "本科",
+        "experience_years": 3,
+        "skills_required": ["Python", "Django", "FastAPI", "MySQL", "Redis", "消息队列", "微服务"],
+        "hard_skills": ["Python", "Django", "FastAPI", "MySQL", "Redis", "Docker", "Kubernetes"],
+        "soft_skills": ["团队协作", "技术方案设计"],
+        "description": "负责核心业务系统的后端开发，参与架构设计，优化系统性能，指导初级工程师。"
+      },
+      "resume": {
+        "name": "候选人A",
+        "summary": "3年Python后端，熟悉Django/Flask/FastAPI，参与过日均100万+请求的微服务系统",
+        "skills": ["Python:精通:3", "Django:熟练:2.5", "Flask:熟练:2", "FastAPI:熟练:1.5", "MySQL:熟练:3", "Redis:熟练:2", "Docker:了解:1", "Git:熟练:3"],
+        "experiences": [
+          {"company": "ABC科技", "position": "Python后端开发", "years": 2, "highlights": ["负责订单系统开发", "使用Django+MySQL+Redis", "日均处理订单10万+"]},
+          {"company": "XYZ软件", "position": "初级Python开发", "years": 1, "highlights": ["参与内部管理系统开发", "使用Flask+MongoDB"]}
+        ],
+        "projects": [
+          {"name": "微服务化改造", "tech": ["FastAPI", "Docker", "RabbitMQ"], "desc": "将单体拆分为微服务，QPS从500提升到3000"}
+        ],
+        "expected_ats_after_optimize": 75,
+        "expected_keyword_recall_after": 0.80
+      }
+    },
+    {
+      "id": "eval_002",
+      "industry": "AI/ML",
+      "jd": {
+        "title": "Python数据工程师",
+        "company": "某AI创业公司",
+        "education": "本科",
+        "experience_years": 2,
+        "skills_required": ["Python", "Pandas", "NumPy", "SQL", "ETL", "数据仓库"],
+        "hard_skills": ["Python", "Pandas", "NumPy", "SQL", "Spark", "Hive"],
+        "soft_skills": ["数据敏感度", "沟通表达"],
+        "description": "负责数据管道开发与维护，参与数据仓库建模，为业务方提供数据支持。"
+      },
+      "resume": {
+        "name": "候选人B",
+        "summary": "2年Python后端，熟悉SQL，处理过大量日志数据，有数据看板项目经验",
+        "skills": ["Python:熟练:2", "MySQL:熟练:2", "Redis:了解:1", "Django:了解:1", "Git:熟练:2"],
+        "experiences": [
+          {"company": "DEF数据", "position": "Python开发", "years": 2, "highlights": ["开发实时数据看板", "使用Python处理日志数据", "WebSocket实时推送"]}
+        ],
+        "projects": [
+          {"name": "实时数据看板", "tech": ["Python", "WebSocket", "MySQL"], "desc": "实时推送业务指标数据"}
+        ],
+        "expected_ats_after_optimize": 70,
+        "expected_keyword_recall_after": 0.70
+      }
+    },
+    {
+      "id": "eval_003",
+      "industry": "电商",
+      "jd": {
+        "title": "全栈开发工程师",
+        "company": "某电商平台",
+        "education": "本科",
+        "experience_years": 3,
+        "skills_required": ["Python", "JavaScript", "React", "Vue", "MySQL", "Redis", "RESTful API"],
+        "hard_skills": ["Python", "JavaScript", "React", "Vue", "Django", "Flask", "MySQL", "Redis"],
+        "soft_skills": ["快速学习", "产品思维"],
+        "description": "负责电商平台前后端开发，参与商品/订单/支付模块，有全栈项目经验优先。"
+      },
+      "resume": {
+        "name": "候选人C",
+        "summary": "3年Python后端，有前后端分离项目经验，熟悉RESTful API设计",
+        "skills": ["Python:精通:3", "Django:熟练:3", "FastAPI:熟练:1.5", "MySQL:熟练:3", "Redis:熟练:2", "JavaScript:了解:1", "Git:熟练:3"],
+        "experiences": [
+          {"company": "GHI电商", "position": "Python后端开发", "years": 3, "highlights": ["电商平台订单支付模块开发", "Django+MySQL+Redis技术栈", "参与前后端分离架构迁移"]}
+        ],
+        "projects": [
+          {"name": "订单中心重构", "tech": ["FastAPI", "Docker", "MySQL"], "desc": "从Django单体迁移到FastAPI微服务"}
+        ],
+        "expected_ats_after_optimize": 72,
+        "expected_keyword_recall_after": 0.75
+      }
+    },
+    {
+      "id": "eval_004",
+      "industry": "金融科技",
+      "jd": {
+        "title": "后端开发工程师",
+        "company": "某金融科技公司",
+        "education": "本科",
+        "experience_years": 2,
+        "skills_required": ["Java", "Spring Boot", "MySQL", "Redis", "消息队列", "分布式"],
+        "hard_skills": ["Java", "Spring Boot", "MyBatis", "MySQL", "Redis", "Kafka", "微服务"],
+        "soft_skills": ["严谨细致", "文档能力"],
+        "description": "负责金融业务系统后端开发，参与分布式系统设计，保障数据一致性。"
+      },
+      "resume": {
+        "name": "候选人D",
+        "summary": "2年Python后端，有微服务和消息队列经验，对分布式系统有基本理解",
+        "skills": ["Python:熟练:2", "FastAPI:熟练:1.5", "Docker:了解:1", "MySQL:熟练:2", "Redis:熟练:1.5", "Git:熟练:2"],
+        "experiences": [
+          {"company": "JKL金融", "position": "后端开发", "years": 2, "highlights": ["业务系统后端API开发", "使用Python+FastAPI", "参与微服务拆分"]}
+        ],
+        "projects": [],
+        "expected_ats_after_optimize": 55,
+        "expected_keyword_recall_after": 0.40
+      }
+    },
+    {
+      "id": "eval_005",
+      "industry": "企业服务",
+      "jd": {
+        "title": "DevOps工程师",
+        "company": "某SaaS公司",
+        "education": "本科",
+        "experience_years": 2,
+        "skills_required": ["Linux", "Docker", "Kubernetes", "CI/CD", "Python", "监控", "自动化运维"],
+        "hard_skills": ["Linux", "Docker", "Kubernetes", "Jenkins", "GitLab CI", "Python", "Prometheus", "Ansible"],
+        "soft_skills": ["问题排查", "责任心"],
+        "description": "负责线上环境运维、CI/CD流水线搭建、监控告警体系维护。"
+      },
+      "resume": {
+        "name": "候选人E",
+        "summary": "3年Python后端，有Docker和微服务部署经验，熟悉Linux基本操作",
+        "skills": ["Python:精通:3", "Docker:了解:1", "Linux:了解:1", "MySQL:熟练:3", "Redis:熟练:2", "Git:熟练:3"],
+        "experiences": [
+          {"company": "MNO科技", "position": "Python后端开发", "years": 3, "highlights": ["微服务系统开发和部署", "使用Docker容器化", "编写部署脚本"]}
+        ],
+        "projects": [
+          {"name": "CI/CD试点", "tech": ["Docker", "Shell"], "desc": "为团队搭建简单的Docker构建和部署流程"}
+        ],
+        "expected_ats_after_optimize": 60,
+        "expected_keyword_recall_after": 0.55
+      }
+    },
+    {
+      "id": "eval_006",
+      "industry": "互联网",
+      "jd": {
+        "title": "Golang后端开发",
+        "company": "某独角兽公司",
+        "education": "本科",
+        "experience_years": 3,
+        "skills_required": ["Go", "Gin", "gRPC", "MySQL", "Redis", "Kafka", "微服务"],
+        "hard_skills": ["Go", "Gin", "Echo", "gRPC", "MySQL", "Redis", "Kafka", "Docker"],
+        "soft_skills": ["自驱力", "技术热情"],
+        "description": "负责高并发业务系统后端开发，使用Go语言，参与微服务架构演进。"
+      },
+      "resume": {
+        "name": "候选人F",
+        "summary": "4年Python后端，精通微服务和消息队列，对Golang有学习意愿",
+        "skills": ["Python:精通:4", "FastAPI:精通:3", "Django:熟练:3", "Docker:熟练:2", "MySQL:精通:4", "Redis:熟练:3", "Kafka:了解:1", "Git:熟练:4"],
+        "experiences": [
+          {"company": "PQR集团", "position": "高级Python后端", "years": 4, "highlights": ["负责消息推送系统（Kafka+Python）", "微服务架构设计和落地", "系统QPS从2000优化到10000"]}
+        ],
+        "projects": [
+          {"name": "消息中心", "tech": ["Python", "Kafka", "Redis", "Docker"], "desc": "基于Kafka的异步消息处理系统"}
+        ],
+        "expected_ats_after_optimize": 50,
+        "expected_keyword_recall_after": 0.35
+      }
+    },
+    {
+      "id": "eval_007",
+      "industry": "互联网",
+      "jd": {
+        "title": "初级Python开发",
+        "company": "某中型互联网公司",
+        "education": "本科",
+        "experience_years": 1,
+        "skills_required": ["Python", "Django或Flask", "MySQL", "Git", "RESTful API"],
+        "hard_skills": ["Python", "Django", "Flask", "MySQL", "Git", "Linux"],
+        "soft_skills": ["学习能力", "团队合作"],
+        "description": "参与业务系统开发，在导师指导下完成功能模块的编码和测试。"
+      },
+      "resume": {
+        "name": "候选人G",
+        "summary": "1年Python实习经验，计算机本科，熟悉Django和数据库基础",
+        "skills": ["Python:熟练:1", "Django:了解:0.5", "MySQL:了解:1", "Git:了解:0.5"],
+        "experiences": [
+          {"company": "STU科技（实习）", "position": "Python实习生", "years": 0.5, "highlights": ["参与内部工具开发", "使用Django+MySQL"]}
+        ],
+        "projects": [
+          {"name": "毕业设计：校园论坛", "tech": ["Python", "Django", "MySQL"], "desc": "基于Django的校园BBS系统"}
+        ],
+        "expected_ats_after_optimize": 68,
+        "expected_keyword_recall_after": 0.70
+      }
+    },
+    {
+      "id": "eval_008",
+      "industry": "AI/ML",
+      "jd": {
+        "title": "机器学习工程师",
+        "company": "某AI研究院",
+        "education": "硕士",
+        "experience_years": 3,
+        "skills_required": ["Python", "PyTorch", "TensorFlow", "机器学习", "深度学习", "数据处理"],
+        "hard_skills": ["Python", "PyTorch", "TensorFlow", "Scikit-learn", "Pandas", "NumPy", "CUDA"],
+        "soft_skills": ["论文阅读", "数学基础"],
+        "description": "负责模型训练和优化，参与算法研究，将论文方法落地到生产环境。"
+      },
+      "resume": {
+        "name": "候选人H",
+        "summary": "3年Python后端+1年ML经验，硕士学历，熟悉PyTorch和数据处理",
+        "skills": ["Python:精通:4", "PyTorch:熟练:1", "Pandas:熟练:1.5", "NumPy:熟练:1", "MySQL:精通:3", "Docker:了解:1", "Git:熟练:3"],
+        "experiences": [
+          {"company": "VWX科技", "position": "Python/ML工程师", "years": 3, "highlights": ["推荐系统特征工程开发", "模型训练和评估", "Python+PyTorch技术栈"]}
+        ],
+        "projects": [
+          {"name": "推荐系统优化", "tech": ["Python", "PyTorch", "Redis"], "desc": "基于深度学习的推荐排序模型"}
+        ],
+        "expected_ats_after_optimize": 65,
+        "expected_keyword_recall_after": 0.55
+      }
+    },
+    {
+      "id": "eval_009",
+      "industry": "电商",
+      "jd": {
+        "title": "高级Java开发",
+        "company": "某电商巨头",
+        "education": "本科",
+        "experience_years": 5,
+        "skills_required": ["Java", "Spring Cloud", "MySQL", "Redis", "Kafka", "分布式", "高并发"],
+        "hard_skills": ["Java", "Spring Boot", "Spring Cloud", "MyBatis", "MySQL", "Redis", "Kafka", "Elasticsearch"],
+        "soft_skills": ["架构能力", "技术管理"],
+        "description": "负责电商核心链路后端开发，参与技术方案评审，指导团队成员。"
+      },
+      "resume": {
+        "name": "候选人I",
+        "summary": "5年Python后端专家，有分布式和高并发经验，带领过3人小团队",
+        "skills": ["Python:精通:5", "Django:精通:4", "FastAPI:精通:3", "MySQL:精通:5", "Redis:精通:4", "Kafka:熟练:2", "Docker:熟练:3", "Kubernetes:了解:2"],
+        "experiences": [
+          {"company": "YZA集团", "position": "技术负责人", "years": 5, "highlights": ["带领3人后端团队", "设计日均千万级请求系统", "微服务架构从0到1落地"]}
+        ],
+        "projects": [
+          {"name": "高并发网关", "tech": ["Python", "Kafka", "Redis", "Docker", "K8s"], "desc": "千万级日请求API网关"}
+        ],
+        "expected_ats_after_optimize": 45,
+        "expected_keyword_recall_after": 0.30
+      }
+    },
+    {
+      "id": "eval_010",
+      "industry": "企业服务",
+      "jd": {
+        "title": "技术文档工程师",
+        "company": "某开源公司",
+        "education": "本科",
+        "experience_years": 1,
+        "skills_required": ["Markdown", "技术写作", "API文档", "Git", "Python基础"],
+        "hard_skills": ["Markdown", "Git", "Python", "OpenAPI", "Swagger"],
+        "soft_skills": ["文字表达", "逻辑清晰"],
+        "description": "负责开源项目文档维护、API文档编写、技术博客输出。"
+      },
+      "resume": {
+        "name": "候选人J",
+        "summary": "1年Python开发，喜欢写技术博客，熟悉Markdown和Git",
+        "skills": ["Python:熟练:1", "Git:熟练:1", "MySQL:了解:0.5"],
+        "experiences": [
+          {"company": "ZAB开源", "position": "初级开发+文档", "years": 1, "highlights": ["参与开源项目开发", "编写API文档", "维护技术Wiki"]}
+        ],
+        "projects": [],
+        "expected_ats_after_optimize": 70,
+        "expected_keyword_recall_after": 0.65
+      }
+    }
+  ]
+}

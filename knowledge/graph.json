@@ -1,0 +1,157 @@
+{
+  "skills": {
+    "Python": {
+      "category": "编程语言",
+      "aliases": ["python3", "cpython"],
+      "children": {
+        "Django": { "category": "Web框架", "aliases": ["django rest framework", "drf"] },
+        "FastAPI": { "category": "Web框架", "aliases": [] },
+        "Flask": { "category": "Web框架", "aliases": [] },
+        "Tornado": { "category": "Web框架", "aliases": [] },
+        "SQLAlchemy": { "category": "ORM", "aliases": [] },
+        "Celery": { "category": "任务队列", "aliases": [] },
+        "asyncio": { "category": "异步", "aliases": ["async/await"] },
+        "Pandas": { "category": "数据处理", "aliases": [] },
+        "NumPy": { "category": "科学计算", "aliases": ["numpy"] },
+        "Pytest": { "category": "测试", "aliases": ["pytest"] }
+      }
+    },
+    "Go": {
+      "category": "编程语言",
+      "aliases": ["golang"],
+      "children": {
+        "Gin": { "category": "Web框架", "aliases": [] },
+        "Echo": { "category": "Web框架", "aliases": [] },
+        "gRPC": { "category": "RPC", "aliases": ["grpc"] },
+        "Go-zero": { "category": "微服务框架", "aliases": ["gozero"] }
+      }
+    },
+    "JavaScript": {
+      "category": "编程语言",
+      "aliases": ["js", "es6", "es2015"],
+      "children": {
+        "TypeScript": { "category": "语言", "aliases": ["ts"] },
+        "React": { "category": "前端框架", "aliases": ["reactjs", "react.js"] },
+        "Vue": { "category": "前端框架", "aliases": ["vuejs", "vue.js"] },
+        "Angular": { "category": "前端框架", "aliases": ["angularjs"] },
+        "Node.js": { "category": "运行时", "aliases": ["node", "nodejs"] },
+        "Express": { "category": "Web框架", "aliases": [] },
+        "Next.js": { "category": "全栈框架", "aliases": ["nextjs"] }
+      }
+    },
+    "Java": {
+      "category": "编程语言",
+      "aliases": [],
+      "children": {
+        "Spring Boot": { "category": "框架", "aliases": ["spring", "springboot"] },
+        "MyBatis": { "category": "ORM", "aliases": [] },
+        "Hibernate": { "category": "ORM", "aliases": [] }
+      }
+    },
+    "MySQL": {
+      "category": "数据库",
+      "aliases": [],
+      "children": {}
+    },
+    "PostgreSQL": {
+      "category": "数据库",
+      "aliases": ["postgres", "pg"],
+      "children": {}
+    },
+    "MongoDB": {
+      "category": "数据库",
+      "aliases": ["mongo"],
+      "children": {}
+    },
+    "Redis": {
+      "category": "缓存/数据库",
+      "aliases": ["redis cluster"],
+      "children": {}
+    },
+    "Elasticsearch": {
+      "category": "搜索引擎",
+      "aliases": ["es", "elastic"],
+      "children": {}
+    },
+    "Docker": {
+      "category": "容器/DevOps",
+      "aliases": ["docker compose", "docker-compose"],
+      "children": {
+        "Kubernetes": { "category": "编排", "aliases": ["k8s", "kube"] },
+        "Docker Swarm": { "category": "编排", "aliases": [] }
+      }
+    },
+    "Kubernetes": {
+      "category": "容器/DevOps",
+      "aliases": ["k8s", "kube"],
+      "children": {
+        "Helm": { "category": "包管理", "aliases": [] },
+        "Istio": { "category": "服务网格", "aliases": [] }
+      }
+    },
+    "AWS": {
+      "category": "云平台",
+      "aliases": ["amazon web services"],
+      "children": {
+        "EC2": { "category": "计算", "aliases": [] },
+        "S3": { "category": "存储", "aliases": [] },
+        "Lambda": { "category": "Serverless", "aliases": [] },
+        "RDS": { "category": "数据库", "aliases": [] }
+      }
+    },
+    "Nginx": {
+      "category": "Web服务器",
+      "aliases": ["nginx"],
+      "children": {}
+    },
+    "Git": {
+      "category": "工具",
+      "aliases": [],
+      "children": {
+        "GitHub Actions": { "category": "CI/CD", "aliases": ["github action", "gh actions"] },
+        "GitLab CI": { "category": "CI/CD", "aliases": ["gitlab-ci"] },
+        "Jenkins": { "category": "CI/CD", "aliases": [] }
+      }
+    },
+    "Linux": {
+      "category": "操作系统",
+      "aliases": ["unix", "ubuntu", "centos"],
+      "children": {}
+    },
+    "Spark": {
+      "category": "大数据",
+      "aliases": ["pyspark", "apache spark"],
+      "children": {
+        "Hadoop": { "category": "大数据存储", "aliases": ["hdfs"] },
+        "Hive": { "category": "数据仓库", "aliases": [] }
+      }
+    },
+    "Kafka": {
+      "category": "消息队列",
+      "aliases": ["apache kafka"],
+      "children": {}
+    },
+    "RabbitMQ": {
+      "category": "消息队列",
+      "aliases": ["rabbit"],
+      "children": {}
+    },
+    "微服务": {
+      "category": "架构",
+      "aliases": ["microservices", "microservice"],
+      "children": {}
+    },
+    "RESTful": {
+      "category": "API设计",
+      "aliases": ["rest api", "restful api"],
+      "children": {
+        "GraphQL": { "category": "API设计", "aliases": ["graphql"] }
+      }
+    },
+    "敏捷开发": {
+      "category": "方法论",
+      "aliases": ["agile", "scrum"],
+      "children": {}
+    }
+  }
+}

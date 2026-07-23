@@ -1,0 +1,32 @@
+# 爬虫配置
+
+platforms:
+  boss:
+    name: "BOSS直聘"
+    base_url: "https://www.zhipin.com"
+    search_url: "https://www.zhipin.com/web/geek/job"
+    enabled: true
+    request_interval: [3, 8]         # 随机延迟范围（秒）
+    max_retries: 3
+    page_timeout: 30                 # 页面加载超时（秒）
+
+  lagou:
+    name: "拉勾"
+    base_url: "https://www.lagou.com"
+    search_url: "https://www.lagou.com/jobs/list_"
+    enabled: true
+    request_interval: [5, 10]
+    max_retries: 3
+    page_timeout: 30
+
+browser:
+  headless: true
+  viewport: [1920, 1080]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  locale: "zh-CN"
+  stealth_mode: true                 # 指纹伪装
+
+anti_detect:
+  random_delay: true
+  simulate_human_scroll: true
+  max_concurrent_sessions: 2

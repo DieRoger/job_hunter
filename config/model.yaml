@@ -1,0 +1,46 @@
+# LLM 模型配置 — 多 provider 支持
+# 可通过环境变量设置 API Key：DEEPSEEK_API_KEY, OPENAI_API_KEY 等
+
+providers:
+  deepseek:
+    base_url: "https://api.deepseek.com/v1"
+    api_key_env: "DEEPSEEK_API_KEY"
+    models:
+      deepseek-chat:
+        max_tokens: 8192
+        supports_json_mode: true
+        cost_per_1k_input: 0.00014   # USD
+        cost_per_1k_output: 0.00028
+      deepseek-reasoner:
+        max_tokens: 65536
+        supports_json_mode: true
+        cost_per_1k_input: 0.00055
+        cost_per_1k_output: 0.00219
+    default_model: deepseek-chat
+    reasoner_model: deepseek-reasoner
+
+  openai:
+    base_url: "https://api.openai.com/v1"
+    api_key_env: "OPENAI_API_KEY"
+    models:
+      gpt-4o:
+        max_tokens: 4096
+        supports_json_mode: true
+      gpt-4o-mini:
+        max_tokens: 4096
+        supports_json_mode: true
+    default_model: gpt-4o-mini
+    reasoner_model: gpt-4o
+
+# Router 配置：按任务自动选模型
+router:
+  rules:
+    - task_pattern: "resume_optimize|career_discover"
+      model: reasoner           # 复杂任务用 reasoning 模型
+    - task_pattern: "jd_analysis|greeting|profile"
+      model: default            # 常规任务用默认模型
+    - task_pattern: "qa_review|reviewer"
+      model: default            # 审核用默认模型
+
+  embedding_provider: deepseek
+  embedding_model: deepseek-embed
