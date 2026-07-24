@@ -176,7 +176,10 @@ class ATSAnalyzer(BaseAgent):
         if resume:
             parts.append(resume.summary)
             for _exp in (resume.experiences or []):
-                parts.append(f"{_exp.get('company','')} {_exp.get('position','')}: {'; '.join(_exp.get('highlights',[]))}")
+                company = _exp.get("company", "")
+                position = _exp.get("position", "")
+                highlights = "; ".join(_exp.get("highlights", []))
+                parts.append(f"{company} {position}: {highlights}")
             for _proj in (resume.projects or []):
                 parts.append(f"{_proj.get('name','')}: {'; '.join(_proj.get('highlights',[]))}")
         else:
