@@ -4,7 +4,7 @@ import os
 import sys
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-os.environ["DEEPSEEK_API_KEY"] = "DEEPSEEK_API_KEY_PLACEHOLDER"
+os.environ["DEEPSEEK_API_KEY"] = ""  # 请设置 DEEPSEEK_API_KEY 环境变量
 
 from evaluation.benchmark import EvaluationRunner
 from experiments.center import Experiment, ExperimentCenter
