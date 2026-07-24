@@ -25,9 +25,9 @@ class ATSAnalyzer(BaseAgent):
         self._cost = CostMonitor.get_instance()
 
     def execute(self, ctx: WorkflowContext, **kwargs: Any) -> AgentResult:
-        profile: UserProfile = kwargs.get("profile")
-        job: JobDescription = kwargs.get("job")
-        resume: OptimizedResume = kwargs.get("resume")
+        profile = kwargs.get("profile")
+        job = kwargs.get("job")
+        resume = kwargs.get("resume")
 
         if not profile or not job:
             return AgentResult.fail("缺少用户画像或职位信息")
@@ -175,15 +175,15 @@ class ATSAnalyzer(BaseAgent):
         parts = [profile.summary]
         if resume:
             parts.append(resume.summary)
-            for exp in (resume.experiences or []):
-                parts.append(f"{exp.get('company','')} {exp.get('position','')}: {'; '.join(exp.get('highlights',[]))}")
-            for proj in (resume.projects or []):
-                parts.append(f"{proj.get('name','')}: {'; '.join(proj.get('highlights',[]))}")
+            for _exp in (resume.experiences or []):
+                parts.append(f"{_exp.get('company','')} {_exp.get('position','')}: {'; '.join(_exp.get('highlights',[]))}")
+            for _proj in (resume.projects or []):
+                parts.append(f"{_proj.get('name','')}: {'; '.join(_proj.get('highlights',[]))}")
         else:
-            for exp in profile.experiences:
-                parts.append(f"{exp.company}: {'; '.join(exp.highlights)}")
-            for proj in profile.projects:
-                parts.append(f"{proj.name}: {'; '.join(proj.highlights)}")
+            for exp2 in profile.experiences:
+                parts.append(f"{exp2.company}: {'; '.join(exp2.highlights)}")
+            for proj2 in profile.projects:
+                parts.append(f"{proj2.name}: {'; '.join(proj2.highlights)}")
         return '\n'.join(parts)
 
     def _generate_suggestions(self, kw: float, quant: float, star: float) -> list[str]:

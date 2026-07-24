@@ -119,7 +119,7 @@ class DedupUtil:
     @staticmethod
     def fuzzy_deduplicate(jobs: list[JobDescription], threshold: float = 0.8) -> list[JobDescription]:
         """模糊去重 — 标题相似度 > threshold 视为重复"""
-        result = []
+        result: list[JobDescription] = []
         for jd in jobs:
             is_dup = False
             for existing in result:

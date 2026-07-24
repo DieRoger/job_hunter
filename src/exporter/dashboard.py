@@ -4,6 +4,8 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
+from typing import Any, cast
+
 from jinja2 import Environment, FileSystemLoader
 
 from src.utils.memory import UserMemory
@@ -52,7 +54,7 @@ class DashboardBuilder:
             [{"name": k, "years": int(v.get("years", 0)),
               "cls": "master" if v.get("years", 0) >= 3 else "pro" if v.get("years", 0) >= 1 else "normal"}
              for k, v in skills_data.items()],
-            key=lambda x: -x["years"]
+            key=lambda x: -cast(int, x["years"])
         )[:12]
 
         # ── 公司分布 ──

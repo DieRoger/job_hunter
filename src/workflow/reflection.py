@@ -62,7 +62,10 @@ class ReflectionWorkflow:
                 logger.error(f"优化失败 (iter {iteration}): {opt_result.error}")
                 continue
 
-            resume: OptimizedResume = opt_result.data
+            resume = opt_result.data
+            if resume is None:
+                logger.error("优化结果数据为空")
+                continue
 
             # 2) QA 审核
             qa_result = self._qa_agent.run(

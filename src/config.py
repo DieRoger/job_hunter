@@ -8,7 +8,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 from pydantic import BaseModel
 
 # ─── 子配置模型 ───────────────────────────────────────────
@@ -193,7 +193,7 @@ class ConfigLoader:
     """统一配置加载器，单例模式"""
 
     _instance: ConfigLoader | None = None
-    _config_dir: Path | None = None
+    _config_dir: Path = Path()  # placeholder, 在 __init__ 中被覆盖
 
     def __init__(self, config_dir: str | Path | None = None):
         if config_dir is None:

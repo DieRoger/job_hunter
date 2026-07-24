@@ -79,7 +79,7 @@ class HttpxLLMClient(BaseLLMClient):
         self.base_url = base_url or ""
         self.default_model = "deepseek-chat"
         self.reasoner_model = "deepseek-reasoner"
-        self._client = httpx.Client(timeout=60.0, proxies={})
+        self._client = httpx.Client(timeout=60.0)
 
     def _call(
         self,
@@ -180,15 +180,20 @@ class DeepSeekClient(HttpxLLMClient):
     provider = "deepseek"
 
     def __init__(self, api_key: str | None = None, base_url: str | None = None):
-        self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY", "")
+        self.api_key = api_key if api_key is not None else os.getenv("DEEPSEEK_API_KEY", "")
         if not self.api_key:
             raise LLMAuthError("DEEPSEEK_API_KEY 未设置")
 
         provider_cfg = model_config.providers.get("deepseek")
-        self.base_url = base_url or (provider_cfg.base_url if provider_cfg else "https://api.deepseek.com/v1")
-        self.default_model = (provider_cfg.default_model if provider_cfg else "deepseek-chat")
-        self.reasoner_model = (provider_cfg.reasoner_model if provider_cfg else "deepseek-reasoner")
-        self._client = httpx.Client(timeout=60.0, proxies={})
+        self.default_model = "deepseek-chat"
+        self.reasoner_model = "deepseek-reasoner"
+        if provider_cfg:
+            self.base_url = base_url if base_url is not None else provider_cfg.base_url
+            self.default_model = provider_cfg.default_model or "deepseek-chat"
+            self.reasoner_model = provider_cfg.reasoner_model or "deepseek-reasoner"
+        else:
+            self.base_url = base_url if base_url is not None else "https://api.deepseek.com/v1"
+        self._client = httpx.Client(timeout=60.0)
 
 
 class OpenAIClient(HttpxLLMClient):
@@ -196,12 +201,12 @@ class OpenAIClient(HttpxLLMClient):
     provider = "openai"
 
     def __init__(self, api_key: str | None = None, base_url: str | None = None):
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY", "")
+        self.api_key = api_key if api_key is not None else os.getenv("OPENAI_API_KEY", "")
         if not self.api_key:
             raise LLMAuthError("OPENAI_API_KEY 未设置")
-        self.base_url = base_url or "https://api.openai.com/v1"
+        self.base_url = base_url if base_url is not None else "https://api.openai.com/v1"
         self.default_model = "gpt-4o-mini"
-        self._client = httpx.Client(timeout=60.0, proxies={})
+        self._client = httpx.Client(timeout=60.0)
 
 
 _provider_registry: dict[str, type[BaseLLMClient]] = {

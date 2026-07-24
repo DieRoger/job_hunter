@@ -63,7 +63,7 @@ class EmbeddingClient:
         else:
             raise ValueError(f"不支持的 Embedding provider: {provider}")
 
-        self._client = httpx.Client(timeout=30.0, proxies={})
+        self._client = httpx.Client(timeout=30.0)
 
     def embed(self, text: str) -> list[float]:
         """单文本嵌入"""

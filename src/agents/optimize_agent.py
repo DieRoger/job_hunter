@@ -39,7 +39,7 @@ class ResumeOptimizeAgent(BaseAgent):
 
     def execute(self, ctx: WorkflowContext, **kwargs: Any) -> AgentResult:
         profile_name = kwargs.get("profile_name", "default")
-        job: JobDescription = kwargs.get("job")
+        job = kwargs.get("job")
 
         if job is None:
             return AgentResult.fail("未提供目标职位")
@@ -99,7 +99,7 @@ class ResumeOptimizeAgent(BaseAgent):
         # RAG: 检索相关优秀简历 chunk
         rag_examples = ""
         try:
-            from knowledge.resume_kb import ResumeKB
+            from knowledge.resume_kb import ResumeKB  # type: ignore[attr-defined]
             kb = ResumeKB()
             query = f"{job.title} {' '.join(job.skills_required[:5] if job.skills_required else job.hard_skills[:5])}"
             chunks = kb.hybrid_search(query, top_k=3)
@@ -153,8 +153,8 @@ class QAAgent(BaseAgent):
     description = "检查优化后简历是否有虚构内容"
 
     def execute(self, ctx: WorkflowContext, **kwargs: Any) -> AgentResult:
-        original: UserProfile = kwargs.get("original_profile")
-        optimized: OptimizedResume = kwargs.get("optimized_resume")
+        original = kwargs.get("original_profile")
+        optimized = kwargs.get("optimized_resume")
 
         if original is None or optimized is None:
             return AgentResult.fail("缺少原始画像或优化简历")
@@ -223,8 +223,8 @@ class GreetingAgent(BaseAgent):
         self._cost = CostMonitor.get_instance()
 
     def execute(self, ctx: WorkflowContext, **kwargs: Any) -> AgentResult:
-        profile: UserProfile = kwargs.get("profile")
-        job: JobDescription = kwargs.get("job")
+        profile = kwargs.get("profile")
+        job = kwargs.get("job")
 
         if profile is None or job is None:
             return AgentResult.fail("缺少用户画像或职位信息")

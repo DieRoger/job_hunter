@@ -140,7 +140,7 @@ class ResumeAgent(BaseAgent):
         """Word 文本提取"""
         try:
             from docx import Document
-            doc = Document(filepath)
+            doc = Document(str(filepath))
             return "\n".join(p.text for p in doc.paragraphs if p.text.strip())
         except ImportError:
             raise ImportError("python-docx 未安装，无法解析 Word") from None

@@ -18,7 +18,7 @@ from src.workflow.context import AgentResult, BaseAgent, WorkflowContext
 
 # ─── Question Graph ─────────────────────────────────────
 
-QUESTION_GRAPH = {
+QUESTION_GRAPH: dict[str, dict[str, Any]] = {
     "start": {
         "type": "project",
         "question": "请介绍一下你最熟悉的一个项目，包括你的角色和技术栈。",

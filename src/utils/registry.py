@@ -24,7 +24,7 @@ class PromptRegistry:
     """Prompt 模板注册中心 — Prompt 与 JSON Schema 绑定，加载时校验"""
 
     _instance: PromptRegistry | None = None
-    _prompts_dir: Path | None = None
+    _prompts_dir: Path = Path()  # placeholder, 在 __init__ 中被覆盖
 
     def __init__(self, prompts_dir: str | Path | None = None):
         if prompts_dir is None:

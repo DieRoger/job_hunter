@@ -8,7 +8,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from typing import Any, cast
 
 from loguru import logger
 
@@ -69,7 +69,7 @@ class PlannerAgent(BaseAgent):
         logger.info(f"Planner 制定计划: {goal}")
 
         tasks = []
-        parallel_groups = []
+        parallel_groups: list[list[str]] = []
 
         # 根据目标自动编排任务（简化版，后续可接入LLM做动态规划）
         if "search" in goal.lower() or "搜索" in goal:
@@ -124,7 +124,7 @@ class PlannerAgent(BaseAgent):
 
     def execute(self, ctx: WorkflowContext, **kwargs: Any) -> AgentResult:
         """执行计划"""
-        plan: Plan = kwargs.get("plan")
+        plan: Plan | None = cast("Plan | None", kwargs.get("plan"))
         shared: SharedContext | None = kwargs.get("shared")
         if not plan:
             return AgentResult.fail("未提供执行计划")
@@ -157,13 +157,14 @@ class PlannerAgent(BaseAgent):
 
                 if task.status == TaskStatus.COMPLETED:
                     completed_ids.add(task.id)
-                    self._results[task.id] = task.result
+                    if task.result is not None:
+                        self._results[task.id] = task.result
                     # 写回 SharedContext
-                    if shared:
+                    if shared and task.result is not None:
                         self._write_to_context(task.id, task.result, shared)
 
                     # 检查是否需要 Reflection（QA不通过则回退）
-                    if task.id == "qa" and task.result and task.result.success:
+                    if task.id == "qa" and task.result and task.result.success and task.result.data is not None:
                         resume = task.result.data
                         if hasattr(resume, 'qa_risk_level') and resume.qa_risk_level == "high":
                             logger.warning("QA不通过(risk=high)，触发回退重优化")

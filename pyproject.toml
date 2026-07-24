@@ -77,16 +77,8 @@ no_implicit_optional = true
 disallow_any_unimported = false
 ignore_missing_imports = true
 
-[tool.mypy."knowledge.*"]
-ignore_errors = true
-
-[tool.mypy."evaluation.*"]
-ignore_errors = true
-
-[tool.mypy."experiments.*"]
-ignore_errors = true
-
-[tool.mypy."tests.*"]
+[[tool.mypy.overrides]]
+module = ["knowledge.*", "evaluation.*", "experiments.*", "tests.*"]
 ignore_errors = true
 
 [tool.pytest.ini_options]

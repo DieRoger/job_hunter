@@ -26,7 +26,7 @@ class MatchScorer(BaseAgent):
         self._graph = SkillGraph()
 
     def execute(self, ctx: WorkflowContext, **kwargs: Any) -> AgentResult:
-        profile: UserProfile = kwargs.get("profile")
+        profile = kwargs.get("profile")
         jobs: list[JobDescription] = kwargs.get("jobs", [])
 
         if profile is None:

@@ -35,7 +35,7 @@ class WorkflowContext:
 
     def replace(self, **changes: Any) -> WorkflowContext:
         """返回新快照（不可变更新）"""
-        current = {k: getattr(self, k) for k in self.__dataclass_fields__}  # type: ignore[attr-defined]
+        current = {k: getattr(self, k) for k in self.__dataclass_fields__}
         current.update(changes)
         return WorkflowContext(**current)
 
